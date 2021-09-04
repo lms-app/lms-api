@@ -1,0 +1,14 @@
+{
+    "Course": true,
+    "Entity": true,
+    "User": true,
+    "Authorization": true,
+    "Folder": true,
+    "Appointment": true,
+    "Catalog": true,
+    "MyEducation": true,
+    "Visibility": true,
+    "Group": true,
+    "Authentication": true,
+    "Tags": true
+}

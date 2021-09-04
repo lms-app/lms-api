@@ -1,0 +1,13 @@
+{
+    "name": "Folder",
+    "alias": "folder",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Folder\\Providers\\FolderServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

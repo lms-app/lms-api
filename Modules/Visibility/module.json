@@ -1,0 +1,13 @@
+{
+    "name": "Visibility",
+    "alias": "visibility",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Visibility\\Providers\\VisibilityServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
