@@ -17,9 +17,9 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE'],
 
-    'allowed_origins' => ['http://lms-app.ru'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [
         '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$',
