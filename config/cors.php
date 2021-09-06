@@ -19,11 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://lms-app.ru'],
 
     'allowed_origins_patterns' => [
         '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$',
-        '/^([a-z0-9|-]+[a-z0-9]{1,}\.)*[a-z0-9|-]+[a-z0-9]{1,}\.[a-z]{2,}$/',
     ],
 
     'allowed_headers' => ['*'],
