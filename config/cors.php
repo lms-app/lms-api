@@ -23,8 +23,7 @@ return [
 
     'allowed_origins_patterns' => [
         '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$',
-        '^https?://(lms-app\.ru)$',
-        '^https?://(develop\.lms-app\.ru)$',
+        '/^([a-z0-9|-]+[a-z0-9]{1,}\.)*[a-z0-9|-]+[a-z0-9]{1,}\.[a-z]{2,}$/',
     ],
 
     'allowed_headers' => ['*'],
