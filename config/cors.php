@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*', 'http://lms-app.ru', 'http://develop.lms-app.ru'],
 
     'allowed_origins_patterns' => ['^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'],
 
