@@ -24,13 +24,6 @@ use Illuminate\Support\Collection;
  *      )
  * )
  */
-/**
- *  @OA\Get(
- *     path="/",
- *     description="Home page",
- *     @OA\Response(response="default", description="Welcome page")
- * )
- */
 abstract class AbstractApiController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
