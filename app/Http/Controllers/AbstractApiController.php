@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  *      title="LMS ",
  *      description="LMS ",
  *      @OA\Contact(
- *          email="admin@admin.com"
+ *          email="igor.sinitsyn@lms-app.ru"
  *      ),
  *      @OA\License(
  *          name="Apache 2.0",

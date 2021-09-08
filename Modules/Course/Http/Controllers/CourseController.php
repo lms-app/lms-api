@@ -36,6 +36,37 @@ final class CourseController extends AbstractApiController
         $this->courseCatalogService = $courseCatalogService;
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/v1/course",
+     *      tags={"Course"},
+     *      summary="Создание курса",
+     *      description="Создание курса",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *       )
+     *     )
+     */
     public function create(CreateCourseRequest $createCourseRequest): CreateCourseResource
     {
         return new CreateCourseResource(
@@ -52,6 +83,37 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/{id}",
+     *      @OA\Parameter(
+     *          parameter="id",
+     *          name="id",
+     *          required=true,
+     *          description="Id курса",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      tags={"Course"},
+     *      summary="Получение информации о курсе для модератора",
+     *      description="Получение информации о курсе для модератора",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *       )
+     *     )
+     */
     public function getById(GetCourseByIdRequest $courseByIdRequest): JsonResponse
     {
         $course = $this->courseService->getCourseById(
@@ -83,6 +145,48 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Put(
+     *      path="/api/v1/course/{id}",
+     *      @OA\Parameter(
+     *          parameter="id",
+     *          name="id",
+     *          required=true,
+     *          description="Id курса",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      tags={"Course"},
+     *      summary="Обновление информации о курсе для модератора",
+     *      description="Обновление информации о курсе для модератора",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *       )
+     *     )
+     */
     public function update(UpdateCourseByIdRequest $updateCourseByIdRequest): GetCourseResource
     {
         return new GetCourseResource(
@@ -93,6 +197,37 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/{id}/preview",
+     *      @OA\Parameter(
+     *          parameter="id",
+     *          name="id",
+     *          required=true,
+     *          description="Id курса",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      tags={"Course"},
+     *      summary="Получение информации о курсе предпросмотра",
+     *      description="Получение информации о курсе для предпросмотра",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
+     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
+     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
+     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
+     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
+     *          ),
+     *       )
+     *     )
+     */
     public function preview(GetPreviewCourseByIdRequest $previewCourseByIdRequest): GetCoursePreviewResource
     {
         return new GetCoursePreviewResource(
@@ -102,6 +237,32 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Delete (
+     *      path="/api/v1/course/{id}",
+     *      @OA\Parameter(
+     *          parameter="id",
+     *          name="id",
+     *          required=true,
+     *          description="Id курса",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      tags={"Course"},
+     *      summary="Получение информации о курсе для модератора",
+     *      description="Получение информации о курсе для модератора",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="deleted", type="string", example="ok"),
+     *          ),
+     *       )
+     *     )
+     */
     public function delete(DeleteCourseByIdRequest $deleteCourseByIdRequest): JsonResponse
     {
         $this->courseService->deleteCourse(
@@ -110,6 +271,20 @@ final class CourseController extends AbstractApiController
         return \response()->json(DeleteResource::DELETE_RESPONSE);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/catalog/student",
+     *      tags={"Course"},
+     *      summary="Список курсов для каталога студента",
+     *      description="Список курсов для каталога студента",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *          ),
+     *       )
+     *     )
+     */
     public function catalogStudent(GetCourseCatalogRequest $getCourseCatalogRequest):JsonResponse
     {
         $catalog = $this->sortBy(
@@ -127,6 +302,20 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/catalog/moderator",
+     *      tags={"Course"},
+     *      summary="Список курсов для каталога модератора",
+     *      description="Список курсов для каталога модератора",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *          ),
+     *       )
+     *     )
+     */
     public function catalogModerator(GetModeratorCourseCatalogRequest $getCourseCatalogRequest):JsonResponse
     {
         $catalog = $this->sortBy(
@@ -144,6 +333,20 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/catalog/tags/student",
+     *      tags={"Course"},
+     *      summary="Список тэгов для каталога студента",
+     *      description="Список тэгов для каталога студента",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *          ),
+     *       )
+     *     )
+     */
     public function getCatalogStudentTags():JsonResponse
     {
         return new JsonResponse(
@@ -155,6 +358,20 @@ final class CourseController extends AbstractApiController
         );
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/catalog/tags/moderator",
+     *      tags={"Course"},
+     *      summary="Список тэгов для каталога модератора",
+     *      description="Список тэгов для каталога модератора",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *          ),
+     *       )
+     *     )
+     */
     public function getCatalogModeratorTags():JsonResponse
     {
         return new JsonResponse(

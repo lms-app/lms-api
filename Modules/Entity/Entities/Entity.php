@@ -27,6 +27,7 @@ final class Entity extends Model
         'entity_type',
         'description',
         'author_id',
+        'folder_id',
     ];
 
     protected static function newFactory()
