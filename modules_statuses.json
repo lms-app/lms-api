@@ -10,5 +10,6 @@
     "Visibility": true,
     "Group": true,
     "Authentication": true,
-    "Tags": true
+    "Tags": true,
+    "File": true
 }
