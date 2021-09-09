@@ -7,6 +7,10 @@ use App\Traits\RegisterConfigTrait;
 use Illuminate\Support\ServiceProvider;
 use Modules\Course\Services\CourseCatalogInterface;
 use Modules\Course\Services\CourseCatalogService;
+use Modules\Course\Services\CourseElementService;
+use Modules\Course\Services\CourseElementServiceInterface;
+use Modules\Course\Services\CourseSectionService;
+use Modules\Course\Services\CourseSectionServiceInterface;
 use Modules\Course\Services\CourseServiceInterface;
 use Modules\Course\Services\CreateCourseInterface;
 use Modules\Course\Services\CourseService;
@@ -31,6 +35,8 @@ final class CourseServiceProvider extends ServiceProvider
     {
         $this->app->bind(CourseServiceInterface::class, CourseService::class);
         $this->app->bind(CourseCatalogInterface::class, CourseCatalogService::class);
+        $this->app->bind(CourseSectionServiceInterface::class, CourseSectionService::class);
+        $this->app->bind(CourseElementServiceInterface::class, CourseElementService::class);
         $this->app->register(RouteServiceProvider::class);
     }
 

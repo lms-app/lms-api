@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Course\Http\Controllers\CourseController;
+use Modules\Course\Http\Controllers\CourseSectionController;
 
 Route::group([], static function() {
     Route::post('/', [CourseController::class, 'create']);
@@ -14,5 +15,6 @@ Route::group([], static function() {
     Route::get('/catalog/moderator', [CourseController::class, 'catalogModerator']);
     Route::get('/catalog/tags/student', [CourseController::class, 'getCatalogStudentTags']);
     Route::get('/catalog/tags/moderator', [CourseController::class, 'getCatalogModeratorTags']);
+    Route::post('/{id}/section', [CourseSectionController::class, 'create']);
 });
 
