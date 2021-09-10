@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Course\Tests\Feature\Section;
 
+use Modules\Course\Entities\Course;
 use Modules\Course\Tests\CourseTestCase;
 use Modules\Course\ValueObjects\CoursePermission;
 use Modules\Entity\Entities\Entity;
@@ -33,14 +34,20 @@ final class CreateCourseSectionTest extends CourseTestCase
             CoursePermission::CREATE
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'author_id' => $this->testingUser->getAuthorId(),
                 'entity_type' => EntityType::TYPE_COURSE,
             ]
         );
 
-        $this->endpoint = sprintf($this->endpoint, $course->getAttribute('id'));
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
+        $this->endpoint = sprintf($this->endpoint, $entity->getAttribute('id'));
 
         $response = $this->post(
             $this->endpoint,
@@ -71,5 +78,32 @@ final class CreateCourseSectionTest extends CourseTestCase
         $response->assertSee(['finish_course_on_fail' => self::FINISH_COURSE_ON_FAIL]);
         $response->assertSee(['show_results' => self::SHOW_RESULTS]);
         $response->assertSee(['sequential_passage' => self::SEQUENTIAL_PASSAGE]);
+    }
+
+    public function testItForbidCreatesSectionForCourseBecauseUserDoesNotHavePermissions():void
+    {
+        $entity = Entity::factory()->create(
+            [
+                'author_id' => $this->testingUser->getAuthorId(),
+                'entity_type' => EntityType::TYPE_COURSE,
+            ]
+        );
+
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
+        $this->endpoint = sprintf($this->endpoint, $entity->getAttribute('id'));
+
+        $response = $this->post(
+            $this->endpoint,
+            [
+                'title' => self::TITLE,
+            ],
+            $this->getAuthorizationHeaders()
+        );
+        $response->assertForbidden();
     }
 }

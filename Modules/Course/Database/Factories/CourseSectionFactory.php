@@ -12,7 +12,7 @@ final class CourseSectionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => 'some title'
         ];
     }
 }

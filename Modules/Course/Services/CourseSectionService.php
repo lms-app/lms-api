@@ -28,6 +28,8 @@ final class CourseSectionService implements CourseSectionServiceInterface
 
     public function deleteSections(int ...$sectionIds): void
     {
-        // TODO: Implement deleteSections() method.
+        CourseSection::query()
+            ->whereIn('id', $sectionIds)
+            ->delete();
     }
 }

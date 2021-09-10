@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Modules\Course\Http\Controllers;
 
 use App\Http\Controllers\AbstractApiController;
+use App\Responses\DeleteResourceResponse;
 use Illuminate\Http\JsonResponse;
 use Modules\Course\Http\Requests\CreateCourseSectionRequest;
+use Modules\Course\Http\Requests\DeleteCourseSectionByIdRequest;
 use Modules\Course\Services\CourseSectionServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -87,5 +89,50 @@ final class CourseSectionController extends AbstractApiController
             ],
             Response::HTTP_CREATED
         );
+    }
+
+    /**
+     * @OA\Delete (
+     *      path="/api/v1/course/{id}/section/{section_id}",
+     *      tags={"Course"},
+     *      summary="Удаление секции курса",
+     *      description="Удаление секции курса",
+     *      @OA\Parameter(
+     *          parameter="id",
+     *          name="id",
+     *          required=true,
+     *          description="Id курса",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="section_id",
+     *          name="section_id",
+     *          required=true,
+     *          description="Id секции",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int32",
+     *          ),
+     *          in="path",
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="deleted", type="string", example="ok"),
+     *          ),
+     *       )
+     *     )
+     */
+    public function delete(DeleteCourseSectionByIdRequest $deleteCourseSectionByIdRequest): JsonResponse
+    {
+        $this->courseSectionService->deleteSections(
+            $deleteCourseSectionByIdRequest->getSectionId()
+        );
+        return DeleteResourceResponse::get();
     }
 }

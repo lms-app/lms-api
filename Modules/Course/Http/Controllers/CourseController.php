@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Modules\Course\Http\Controllers;
 
 use App\Http\Controllers\AbstractApiController;
-use App\Resources\DeleteResource;
+use App\Responses\DeleteResourceResponse;
 use App\Responses\PaginatorResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -17,8 +17,6 @@ use Modules\Course\Http\Requests\GetPreviewCourseByIdRequest;
 use Modules\Course\Http\Requests\UpdateCourseByIdRequest;
 use Modules\Course\Http\Responses\CourseDataResponse;
 use Modules\Course\Http\Responses\CoursePreviewResponse;
-use Modules\Course\Resources\GetCoursePreviewResource;
-use Modules\Course\Resources\GetCourseResource;
 use Modules\Course\Services\CourseCatalogInterface;
 use Modules\Course\Services\CourseServiceInterface;
 use Modules\Entity\ValueObjects\EntityType;
@@ -265,7 +263,8 @@ final class CourseController extends AbstractApiController
         $this->courseService->deleteCourse(
             $deleteCourseByIdRequest->getId()
         );
-        return \response()->json(DeleteResource::DELETE_RESPONSE);
+
+        return DeleteResourceResponse::get();
     }
 
     /**
