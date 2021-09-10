@@ -15,12 +15,14 @@ use Modules\Course\Http\Requests\GetCourseCatalogRequest;
 use Modules\Course\Http\Requests\GetModeratorCourseCatalogRequest;
 use Modules\Course\Http\Requests\GetPreviewCourseByIdRequest;
 use Modules\Course\Http\Requests\UpdateCourseByIdRequest;
-use Modules\Course\Resources\CreateCourseResource;
+use Modules\Course\Http\Responses\CourseDataResponse;
+use Modules\Course\Http\Responses\CoursePreviewResponse;
 use Modules\Course\Resources\GetCoursePreviewResource;
 use Modules\Course\Resources\GetCourseResource;
 use Modules\Course\Services\CourseCatalogInterface;
 use Modules\Course\Services\CourseServiceInterface;
 use Modules\Entity\ValueObjects\EntityType;
+use Symfony\Component\HttpFoundation\Response;
 
 final class CourseController extends AbstractApiController
 {
@@ -67,19 +69,36 @@ final class CourseController extends AbstractApiController
      *       )
      *     )
      */
-    public function create(CreateCourseRequest $createCourseRequest): CreateCourseResource
+    public function create(CreateCourseRequest $createCourseRequest): JsonResponse
     {
-        return new CreateCourseResource(
-            $this->courseService->createCourse(
-                $createCourseRequest
-                    ->merge(
-                        [
-                            'author_id' => $createCourseRequest->user()->getId(),
-                            'entity_type' => EntityType::create(EntityType::TYPE_COURSE)
-                        ]
-                    )
-                    ->all()
-            )
+        $course = $this->courseService->createCourse(
+            $createCourseRequest
+                ->merge(
+                    [
+                        'author_id' => $createCourseRequest->user()->getId(),
+                        'entity_type' => EntityType::create(EntityType::TYPE_COURSE)
+                    ]
+                )
+                ->all()
+        );
+        $entity = $course->getEntity();
+
+        return new JsonResponse(
+            [
+                'data' => [
+                    'entity_id' => $entity->getId(),
+                    'entity_type' => $entity->getEntityType(),
+                    'author_id' => $entity->getAuthorId(),
+                    'status' => $entity->getEntityStatus(),
+                    'short_description' => $entity->getAttribute('short_description'),
+                    'description' => $entity->getAttribute('description'),
+                    'folder_id' => $entity->getAttribute('folder_id'),
+                    'attempts_count' => $course->getAttribute('attempts_count'),
+                    'after_finished_view_element_access' => $course->getAttribute('after_finished_view_element_access'),
+                    'section_sequential_passage' => $course->getAttribute('section_sequential_passage'),
+                ]
+            ],
+            Response::HTTP_CREATED
         );
     }
 
@@ -114,34 +133,12 @@ final class CourseController extends AbstractApiController
      *       )
      *     )
      */
-    public function getById(GetCourseByIdRequest $courseByIdRequest): JsonResponse
+    public function getById(GetCourseByIdRequest $courseByIdRequest): CourseDataResponse
     {
-        $course = $this->courseService->getCourseById(
-            $courseByIdRequest->getId()
-        );
-
-        $entity = $course->getEntity();
-
-        return new JsonResponse(
-            [
-                'data' => [
-                    'author_id' => $entity->getAttribute('author_id'),
-                    'title' => $entity->getAttribute('title'),
-                    'status' => $entity->getAttribute('status'),
-                    'short_description' => $entity->getAttribute('short_description'),
-                    'description' => $entity->getAttribute('description'),
-                    'attempts_count' => $course->getAttribute('attempts_count'),
-                    'after_finished_view_element_access' => $course->getAttribute('after_finished_view_element_access'),
-                    'section_sequential_passage' => $course->getAttribute('section_sequential_passage'),
-                    'members_block' => [
-                        'access_date' => [],
-                        'member_enterprises' => [],
-                        'member_excludes' => [],
-                        'member_groups' => [],
-                        'member_users' => [],
-                    ]
-                ]
-            ]
+        return CourseDataResponse::get(
+            $this->courseService->getCourseById(
+                $courseByIdRequest->getId()
+            )
         );
     }
 
@@ -187,9 +184,9 @@ final class CourseController extends AbstractApiController
      *       )
      *     )
      */
-    public function update(UpdateCourseByIdRequest $updateCourseByIdRequest): GetCourseResource
+    public function update(UpdateCourseByIdRequest $updateCourseByIdRequest): CourseDataResponse
     {
-        return new GetCourseResource(
+        return CourseDataResponse::get(
             $this->courseService->updateCourse(
                 $updateCourseByIdRequest->getId(),
                 $updateCourseByIdRequest->all()
@@ -228,9 +225,9 @@ final class CourseController extends AbstractApiController
      *       )
      *     )
      */
-    public function preview(GetPreviewCourseByIdRequest $previewCourseByIdRequest): GetCoursePreviewResource
+    public function preview(GetPreviewCourseByIdRequest $previewCourseByIdRequest): CoursePreviewResponse
     {
-        return new GetCoursePreviewResource(
+        return new CoursePreviewResponse(
             $this->courseService->getCourseById(
                 $previewCourseByIdRequest->getId()
             )

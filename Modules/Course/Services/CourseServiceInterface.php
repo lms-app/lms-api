@@ -17,6 +17,6 @@ interface CourseServiceInterface
      * @throws Throwable
      */
     public function createCourse(array $createCourseData):Course;
-    public function updateCourse(int $courseId, array $createCourseData):Entity;
+    public function updateCourse(int $courseId, array $updateData):Course;
     public function deleteCourse(int $courseId):void;
 }

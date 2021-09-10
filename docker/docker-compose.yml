@@ -64,6 +64,8 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
             TZ: 'Europe/London'
             PGTZ: 'Europe/London'
+        volumes:
+            - ./database/init/01.sql:/docker-entrypoint-initdb.d/01.sql
 
     redis:
       build: ./redis

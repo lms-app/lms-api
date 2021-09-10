@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Modules\Course\Tests\Feature;
 
+use Modules\Course\Entities\Course;
 use Modules\Course\ValueObjects\CoursePermission;
 use Modules\Course\Tests\CourseTestCase;
 use Modules\Entity\Entities\Entity;
@@ -25,7 +26,7 @@ final class AdministratorGetCourseTest extends CourseTestCase
             CoursePermission::SEE_AS_ADMINISTRATOR
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -33,9 +34,15 @@ final class AdministratorGetCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->get(
@@ -44,7 +51,6 @@ final class AdministratorGetCourseTest extends CourseTestCase
         );
 
         $response->assertOk();
-        $response->assertSee(['entity' => EntityType::TYPE_COURSE]);
     }
 
     public function testItGetsCourseBecauseUserIsFolderAdministrator():void
@@ -61,7 +67,7 @@ final class AdministratorGetCourseTest extends CourseTestCase
             ]
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -70,9 +76,15 @@ final class AdministratorGetCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->get(
@@ -81,12 +93,11 @@ final class AdministratorGetCourseTest extends CourseTestCase
         );
 
         $response->assertOk();
-        $response->assertSee(['entity' => EntityType::TYPE_COURSE]);
     }
 
     public function testItForbidGetCourseBecauseUserIsNotAdministrator():void
     {
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -94,9 +105,15 @@ final class AdministratorGetCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->get(

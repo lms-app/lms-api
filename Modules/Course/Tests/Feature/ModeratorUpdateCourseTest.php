@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Modules\Course\Tests\Feature;
 
+use Modules\Course\Entities\Course;
 use Modules\Course\ValueObjects\CoursePermission;
 use Modules\Course\Tests\CourseTestCase;
 use Modules\Entity\Entities\Entity;
@@ -27,7 +28,7 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             CoursePermission::EDIT_AS_MODERATOR
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -35,9 +36,15 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->put(
@@ -51,7 +58,6 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
         $data = $response->decodeResponseJson()['data'];
 
         $response->assertOk();
-        $response->assertSee(['entity' => EntityType::TYPE_COURSE]);
         self::assertSame(self::TITLE, $data['title']);
     }
 
@@ -69,7 +75,7 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             ]
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -78,9 +84,15 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->put(
@@ -91,8 +103,10 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             $this->getAuthorizationHeaders()
         );
 
+        $data = $response->decodeResponseJson()['data'];
+
         $response->assertOk();
-        $response->assertSee(['entity' => EntityType::TYPE_COURSE]);
+        self::assertSame(self::TITLE, $data['title']);
     }
 
     public function testItForbidUpdateCourseBecauseUserIsNotAuthor():void
@@ -101,7 +115,7 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             CoursePermission::SEE_AS_MODERATOR
         );
 
-        $course = Entity::factory()->create(
+        $entity = Entity::factory()->create(
             [
                 'entity_type' => EntityType::TYPE_COURSE,
                 'status' => EntityStatus::STATUS_OPEN,
@@ -109,9 +123,15 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
             ]
         );
 
+        $course = Course::factory()->create(
+            [
+                'entity_id' => $entity->getAttribute('id'),
+            ]
+        );
+
         $this->endpoint = sprintf(
             $this->endpoint,
-            $course->getAttribute('id')
+            $entity->getAttribute('id')
         );
 
         $response = $this->put(

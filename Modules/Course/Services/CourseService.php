@@ -23,7 +23,8 @@ final class CourseService implements CourseServiceInterface
     {
         DB::beginTransaction();
         try {
-            $this->entityService->createEntity($createCourseData);
+            $entity = $this->entityService->createEntity($createCourseData);
+            $createCourseData['entity_id'] = $entity->getAttribute('id');
 
             /** @var Course $course */
             $course = Course::query()->create($createCourseData);
@@ -48,13 +49,29 @@ final class CourseService implements CourseServiceInterface
         );
     }
 
-    public function updateCourse(int $courseId, array $createCourseData): Entity
+    /**
+     * @throws Throwable
+     */
+    public function updateCourse(int $courseId, array $updateData): Course
     {
-        return $this->entityService->updateEntity(
-            $this->getCourseById(
+        DB::beginTransaction();
+        try {
+            $course = $this->getCourseById(
                 $courseId
-            ),
-            $createCourseData
-        );
+            );
+            $course->update($updateData);
+            $course->save();
+
+            $this->entityService->updateEntity(
+                $course->getEntity(),
+                $updateData
+            );
+
+            DB::commit();
+            return $course;
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }
