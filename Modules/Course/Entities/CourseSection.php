@@ -1,11 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Modules\Course\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Entity\Entities\Entity;
 
-class CourseSection extends Model
+/**
+ * @property Entity $entity
+ */
+final class CourseSection extends Model
 {
     use HasFactory;
 
@@ -22,6 +28,16 @@ class CourseSection extends Model
         'show_results',
         'sequential_passage',
     ];
+
+    public function entity():BelongsTo
+    {
+        return $this->belongsTo(Entity::class, 'entity_id', 'id');
+    }
+
+    public function getEntity():Entity
+    {
+        return $this->entity;
+    }
 
     protected static function newFactory()
     {

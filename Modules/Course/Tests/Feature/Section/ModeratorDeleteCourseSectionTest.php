@@ -15,7 +15,7 @@ use Modules\Entity\ValueObjects\EntityType;
  * @group functional
  * @group course
  */
-final class AdministratorDeleteCourseSectionTest extends CourseTestCase
+final class ModeratorDeleteCourseSectionTest extends CourseTestCase
 {
     protected string $endpoint = 'api/v1/course/section/%d';
 
@@ -27,7 +27,7 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
 
         $entity = Entity::factory()->create(
             [
-                'author_id' => $this->getUserForTest()->getAuthorId(),
+                'author_id' => $this->testingUser->getAuthorId(),
                 'entity_type' => EntityType::TYPE_COURSE,
             ]
         );
@@ -59,8 +59,12 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
         self::assertFalse(CourseSection::query()->exists());
     }
 
-    public function testItForbidDeleteCourseSectionWhenUserDoesNotHavePermissions():void
+    public function testItForbidDeleteCourseSectionBecauseUserIsNotEntityAuthor():void
     {
+        $this->testingUser->givePermissionTo(
+            CoursePermission::EDIT_AS_ADMINISTRATOR
+        );
+
         $entity = Entity::factory()->create(
             [
                 'author_id' => $this->getUserForTest()->getAuthorId(),
