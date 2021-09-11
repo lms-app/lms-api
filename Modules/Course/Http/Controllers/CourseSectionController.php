@@ -25,7 +25,7 @@ final class CourseSectionController extends AbstractApiController
     /**
      * @OA\Post(
      *      path="/api/v1/course/{id}/section",
-     *      tags={"Course"},
+     *      tags={"Course", "Course Section"},
      *      summary="Создание секции курса",
      *      description="Создание секции курса",
      *      @OA\Parameter(
@@ -93,7 +93,7 @@ final class CourseSectionController extends AbstractApiController
     /**
      * @OA\Put(
      *      path="/api/v1/course/section/{section_id}",
-     *      tags={"Course"},
+     *      tags={"Course", "Course Section"},
      *      summary="Обновление секции курса",
      *      description="Обновление секции курса",
      *      @OA\Parameter(
@@ -163,7 +163,7 @@ final class CourseSectionController extends AbstractApiController
     /**
      * @OA\Delete (
      *      path="/api/v1/course/{id}/section/{section_id}",
-     *      tags={"Course"},
+     *      tags={"Course", "Course Section"},
      *      summary="Удаление секции курса",
      *      description="Удаление секции курса",
      *      @OA\Parameter(
