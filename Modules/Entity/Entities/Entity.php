@@ -97,4 +97,9 @@ final class Entity extends Model
     {
         return $this->created_at;
     }
+
+    public function equals(Entity $entity):bool
+    {
+        return $this->id === $entity->getAttribute('id');
+    }
 }

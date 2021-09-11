@@ -9,6 +9,6 @@ interface CourseSectionServiceInterface
 {
     public function getSectionById(int $sectionId):CourseSection;
     public function createSection(array $createCourseData):CourseSection;
-    public function updateSection(int $sectionId, array $updateData):CourseSection;
+    public function updateSection(CourseSection $courseSection, array $updateData):CourseSection;
     public function deleteSections(int ...$sectionIds):void;
 }

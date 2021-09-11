@@ -19,15 +19,6 @@ final class CreateCourseSectionTest extends CourseTestCase
 {
     protected string $endpoint = 'api/v1/course/%d/section';
 
-    private const SORT_ORDER = 200;
-    private const PASS_SCORE = 1000;
-    private const TITLE = 'Секция видео';
-    private const DESCRIPTION = 'Описание секции';
-    private const ADMIN_NOTES = 'Заметки админа';
-    private const FINISH_COURSE_ON_FAIL = true;
-    private const SHOW_RESULTS = true;
-    private const SEQUENTIAL_PASSAGE = true;
-
     public function testItCreatesSectionForCourse():void
     {
         $this->testingUser->givePermissionTo(
@@ -69,8 +60,7 @@ final class CreateCourseSectionTest extends CourseTestCase
         self::assertSame(self::ADMIN_NOTES, $decodedResponse['admin_notes']);
         self::assertSame(self::TITLE, $decodedResponse['title']);
 
-        $response->assertStatus(Response::HTTP_CREATED);
-        $response->assertSee(['entity_id' => $course->getAttribute('entity_id')]);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertSee(['author_id' => $this->testingUser->getAuthorId()]);
         $response->assertSee(['parent_id' => null]);
         $response->assertSee(['sort_order' => self::SORT_ORDER]);

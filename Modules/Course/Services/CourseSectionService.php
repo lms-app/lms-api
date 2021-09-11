@@ -10,7 +10,9 @@ final class CourseSectionService implements CourseSectionServiceInterface
 {
     public function getSectionById(int $sectionId): CourseSection
     {
-        // TODO: Implement getSectionById() method.
+        return CourseSection::query()
+            ->where('id', '=', $sectionId)
+            ->first();
     }
 
     public function createSection(array $createCourseData): CourseSection
@@ -21,9 +23,10 @@ final class CourseSectionService implements CourseSectionServiceInterface
         );
     }
 
-    public function updateSection(int $sectionId, array $updateData): CourseSection
+    public function updateSection(CourseSection $courseSection, array $updateData): CourseSection
     {
-        // TODO: Implement updateSection() method.
+        $courseSection->update($updateData);
+        return $courseSection;
     }
 
     public function deleteSections(int ...$sectionIds): void

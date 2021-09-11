@@ -46,7 +46,6 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
 
         $this->endpoint = sprintf(
             $this->endpoint,
-            $entity->getAttribute('id'),
             $courseSection->getAttribute('id')
         );
 
@@ -82,7 +81,6 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
 
         $this->endpoint = sprintf(
             $this->endpoint,
-            $entity->getAttribute('id'),
             $courseSection->getAttribute('id')
         );
 

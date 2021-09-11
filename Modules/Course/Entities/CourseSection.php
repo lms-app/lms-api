@@ -39,6 +39,16 @@ final class CourseSection extends Model
         return $this->entity;
     }
 
+    public function getEntityId():int
+    {
+        return $this->entity_id;
+    }
+
+    public function getId():int
+    {
+        return $this->id;
+    }
+
     protected static function newFactory()
     {
         return \Modules\Course\Database\Factories\CourseSectionFactory::new();

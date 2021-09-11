@@ -20,8 +20,6 @@ final class ModeratorUpdateCourseTest extends CourseTestCase
 {
     private string $endpoint = 'api/v1/course/%d';
 
-    private const TITLE = 'Супер заголовок';
-
     public function testItUpdatesCourseBecauseUserIsAuthor():void
     {
         $this->testingUser->givePermissionTo(
