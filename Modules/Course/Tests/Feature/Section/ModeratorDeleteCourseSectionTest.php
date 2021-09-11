@@ -22,7 +22,7 @@ final class ModeratorDeleteCourseSectionTest extends CourseTestCase
     public function testItDeleteSectionForCourse():void
     {
         $this->testingUser->givePermissionTo(
-            CoursePermission::EDIT_AS_ADMINISTRATOR
+            CoursePermission::EDIT_AS_MODERATOR
         );
 
         $entity = Entity::factory()->create(
@@ -62,7 +62,7 @@ final class ModeratorDeleteCourseSectionTest extends CourseTestCase
     public function testItForbidDeleteCourseSectionBecauseUserIsNotEntityAuthor():void
     {
         $this->testingUser->givePermissionTo(
-            CoursePermission::EDIT_AS_ADMINISTRATOR
+            CoursePermission::EDIT_AS_MODERATOR
         );
 
         $entity = Entity::factory()->create(
