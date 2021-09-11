@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests;
+namespace Modules\Course\Http\Requests\Course;
 
 use App\Requests\FormRequest;
 use App\Traits\GetIdTrait;
+use Modules\Course\Entities\Course;
+use Modules\Course\Traits\GetCourseTrait;
 use Modules\Entity\Entities\Entity;
 use Modules\Entity\ValueObjects\EntityType;
 
@@ -13,18 +15,11 @@ use Modules\Entity\ValueObjects\EntityType;
  */
 final class GetCourseByIdRequest  extends FormRequest
 {
-    use GetIdTrait;
+    use GetCourseTrait;
 
     public function authorize():bool
     {
-        return $this->user()->canSeeCourseAsEditor(
-            Entity::getEntityByType(
-                $this->getId(),
-                EntityType::create(
-                    EntityType::TYPE_COURSE
-                )
-            )
-        );
+        return $this->getUserModel()->canSeeCourseAsEditor(Course::getById($this->getCourseId()));
     }
 
     public function rules():array

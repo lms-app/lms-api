@@ -6,9 +6,9 @@ namespace Modules\Course\Http\Controllers;
 use App\Http\Controllers\AbstractApiController;
 use App\Responses\DeleteResourceResponse;
 use Illuminate\Http\JsonResponse;
-use Modules\Course\Http\Requests\CreateCourseSectionRequest;
-use Modules\Course\Http\Requests\DeleteCourseSectionByIdRequest;
-use Modules\Course\Http\Requests\UpdateCourseSectionByIdRequest;
+use Modules\Course\Http\Requests\Section\CreateCourseSectionRequest;
+use Modules\Course\Http\Requests\Section\DeleteCourseSectionByIdRequest;
+use Modules\Course\Http\Requests\Section\UpdateCourseSectionByIdRequest;
 use Modules\Course\Http\Responses\CourseSectionDataResponse;
 use Modules\Course\Services\CourseSectionServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,13 +24,13 @@ final class CourseSectionController extends AbstractApiController
 
     /**
      * @OA\Post(
-     *      path="/api/v1/course/{id}/section",
+     *      path="/api/v1/course/{course_id}/section",
      *      tags={"Course", "Course Section"},
      *      summary="Создание секции курса",
      *      description="Создание секции курса",
      *      @OA\Parameter(
-     *          parameter="id",
-     *          name="id",
+     *          parameter="course_id",
+     *          name="course_id",
      *          required=true,
      *          description="Id курса",
      *          @OA\Schema(
@@ -82,7 +82,7 @@ final class CourseSectionController extends AbstractApiController
                     ->merge(
                         [
                             'author_id' => $createCourseSectionRequest->user()->getId(),
-                            'entity_id' => $createCourseSectionRequest->getId(),
+                            'entity_id' => $createCourseSectionRequest->getCourseId(),
                         ]
                     )
                     ->all()

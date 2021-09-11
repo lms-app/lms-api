@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Course\Database\Factories\CoursesFactory;
 use Modules\Entity\Entities\Entity;
+use Modules\Folder\Entities\Folder;
 
 /**
  * @property Entity $entity
@@ -15,6 +16,8 @@ use Modules\Entity\Entities\Entity;
 final class Course extends Model
 {
     use HasFactory;
+
+    private static array $courses = [];
 
     protected $fillable = [
         'entity_id',
@@ -31,6 +34,32 @@ final class Course extends Model
     public function getEntity():Entity
     {
         return $this->entity;
+    }
+
+    public function isInFolder():bool
+    {
+       return $this->getEntity()->isInFolder();
+    }
+
+    public function getFolder():?Folder
+    {
+        return $this->getEntity()->getFolder();
+    }
+
+    public function getAuthorId():int
+    {
+       return $this->getEntity()->getAuthorId();
+    }
+
+    public static function getById(int $id):Course
+    {
+        if (!isset(self::$courses[$id])) {
+            self::$courses[$id] = self::query()
+                ->where('entity_id', '=', $id)
+                ->first();
+        }
+
+        return self::$courses[$id];
     }
 
     protected static function newFactory():CoursesFactory

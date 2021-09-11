@@ -12,6 +12,8 @@ final class Folder extends Model
     use HasFactory;
     use SoftDeletes;
 
+    private static array $folders = [];
+
     protected $fillable = [
         'author_id',
         'entity_type',
@@ -19,15 +21,20 @@ final class Folder extends Model
         'color',
     ];
 
-    public static function getById(int $folderId):Folder
+    public static function getById(int $id):self
     {
-        return Folder::query()
-            ->where(
-            'id',
-            '=',
-            $folderId
-            )
-            ->firstOrFail();
+        if (!isset(self::$folders[$id])) {
+            self::$folders[$id] = self::query()
+                ->where('id', '=', $id)
+                ->first();
+        }
+
+        return self::$folders[$id];
+    }
+
+    public function getAuthorId():int
+    {
+        return $this->author_id;
     }
 
     protected static function newFactory()

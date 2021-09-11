@@ -33,8 +33,7 @@ final class CreateCourseTest extends CourseTestCase
             $this->getAuthorizationHeaders()
         );
 
-        $response->assertStatus(Response::HTTP_CREATED);
-        $response->assertSee(['entity' => EntityTypesEnum::TYPE_COURSE]);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertSee(['status' => EntityStatus::STATUS_OPEN]);
     }
 

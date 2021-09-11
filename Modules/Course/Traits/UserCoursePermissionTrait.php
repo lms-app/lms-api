@@ -3,30 +3,31 @@ declare (strict_types=1);
 
 namespace Modules\Course\Traits;
 
+use Modules\Course\Entities\Course;
 use Modules\Course\ValueObjects\CoursePermission;
 use Modules\Entity\Entities\Entity;
 use Modules\Course\ValueObjects\CourseFolderPermission;
 
 trait UserCoursePermissionTrait
 {
-    public function canSeeCourseAsStudent(Entity $entity):bool
+    public function canSeeCourseAsStudent(Course $entity):bool
     {
         return $this->hasPermissionTo(CoursePermission::SEE_AS_STUDENT);
     }
 
-    public function canSeeCourseAsEditor(Entity $entity):bool
+    public function canSeeCourseAsEditor(Course $course):bool
     {
-        if (!$entity->isInFolder()) {
+        if (!$course->isInFolder()) {
             if ($this->hasPermissionTo(CoursePermission::SEE_AS_ADMINISTRATOR)) {
                 return true;
             }
 
             if ($this->hasPermissionTo(CoursePermission::SEE_AS_MODERATOR)) {
-                return $this->isModelAuthor($entity);
+                return $this->isModelAuthor($course);
             }
         }
 
-        if ($entity->isInFolder()) {
+        if ($course->isInFolder()) {
             if ($this->hasPermissionTo(CourseFolderPermission::SEE_AS_ADMINISTRATOR)
                 && $this->hasAnyPermission(
                     [
@@ -46,25 +47,25 @@ trait UserCoursePermissionTrait
                     ]
                 )
             ){
-                return $this->isModelAuthor($entity->getFolder());
+                return $this->isModelAuthor($course->getFolder());
             }
         }
         return false;
     }
 
-    public function canDeleteCourse(Entity $entity):bool
+    public function canDeleteCourse(Course $course):bool
     {
-        if (!$entity->isInFolder()) {
+        if (!$course->isInFolder()) {
             if ($this->hasPermissionTo(CoursePermission::DELETE_AS_ADMINISTRATOR)) {
                 return true;
             }
 
             if ($this->hasPermissionTo(CoursePermission::DELETE_AS_MODERATOR)) {
-                return $this->isModelAuthor($entity);
+                return $this->isModelAuthor($course);
             }
         }
 
-        if ($entity->isInFolder()) {
+        if ($course->isInFolder()) {
             if ($this->hasPermissionTo(CourseFolderPermission::SEE_AS_ADMINISTRATOR)
                 && $this->hasAnyPermission(
                     [
@@ -84,25 +85,25 @@ trait UserCoursePermissionTrait
                     ]
                 )
             ){
-                return $this->isModelAuthor($entity->getFolder());
+                return $this->isModelAuthor($course->getFolder());
             }
         }
         return false;
     }
 
-    public function canUpdateCourse(Entity $entity):bool
+    public function canUpdateCourse(Course $course):bool
     {
-        if (!$entity->isInFolder()) {
+        if (!$course->isInFolder()) {
             if ($this->hasPermissionTo(CoursePermission::EDIT_AS_ADMINISTRATOR)) {
                 return true;
             }
 
             if ($this->hasPermissionTo(CoursePermission::EDIT_AS_MODERATOR)) {
-                return $this->isModelAuthor($entity);
+                return $this->isModelAuthor($course);
             }
         }
 
-        if ($entity->isInFolder()) {
+        if ($course->isInFolder()) {
             if ($this->hasPermissionTo(CourseFolderPermission::SEE_AS_ADMINISTRATOR)
                 && $this->hasAnyPermission(
                     [
@@ -122,7 +123,7 @@ trait UserCoursePermissionTrait
                     ]
                 )
             ){
-                return $this->isModelAuthor($entity->getFolder());
+                return $this->isModelAuthor($course->getFolder());
             }
         }
         return false;

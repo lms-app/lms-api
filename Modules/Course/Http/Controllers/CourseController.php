@@ -8,13 +8,14 @@ use App\Responses\DeleteResourceResponse;
 use App\Responses\PaginatorResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Modules\Course\Http\Requests\CreateCourseRequest;
-use Modules\Course\Http\Requests\DeleteCourseByIdRequest;
-use Modules\Course\Http\Requests\GetCourseByIdRequest;
-use Modules\Course\Http\Requests\GetCourseCatalogRequest;
-use Modules\Course\Http\Requests\GetModeratorCourseCatalogRequest;
-use Modules\Course\Http\Requests\GetPreviewCourseByIdRequest;
-use Modules\Course\Http\Requests\UpdateCourseByIdRequest;
+use Modules\Course\Entities\Course;
+use Modules\Course\Http\Requests\Course\CreateCourseRequest;
+use Modules\Course\Http\Requests\Course\DeleteCourseByIdRequest;
+use Modules\Course\Http\Requests\Course\GetCourseByIdRequest;
+use Modules\Course\Http\Requests\Course\GetCourseCatalogRequest;
+use Modules\Course\Http\Requests\Course\GetModeratorCourseCatalogRequest;
+use Modules\Course\Http\Requests\Course\GetPreviewCourseByIdRequest;
+use Modules\Course\Http\Requests\Course\UpdateCourseByIdRequest;
 use Modules\Course\Http\Responses\CourseDataResponse;
 use Modules\Course\Http\Responses\CoursePreviewResponse;
 use Modules\Course\Services\CourseCatalogInterface;
@@ -67,42 +68,25 @@ final class CourseController extends AbstractApiController
      *       )
      *     )
      */
-    public function create(CreateCourseRequest $createCourseRequest): JsonResponse
+    public function create(CreateCourseRequest $createCourseRequest): CourseDataResponse
     {
-        $course = $this->courseService->createCourse(
-            $createCourseRequest
-                ->merge(
-                    [
-                        'author_id' => $createCourseRequest->user()->getId(),
-                        'entity_type' => EntityType::create(EntityType::TYPE_COURSE)
-                    ]
-                )
-                ->all()
-        );
-        $entity = $course->getEntity();
-
-        return new JsonResponse(
-            [
-                'data' => [
-                    'entity_id' => $entity->getId(),
-                    'entity_type' => $entity->getEntityType(),
-                    'author_id' => $entity->getAuthorId(),
-                    'status' => $entity->getEntityStatus(),
-                    'short_description' => $entity->getAttribute('short_description'),
-                    'description' => $entity->getAttribute('description'),
-                    'folder_id' => $entity->getAttribute('folder_id'),
-                    'attempts_count' => $course->getAttribute('attempts_count'),
-                    'after_finished_view_element_access' => $course->getAttribute('after_finished_view_element_access'),
-                    'section_sequential_passage' => $course->getAttribute('section_sequential_passage'),
-                ]
-            ],
-            Response::HTTP_CREATED
+        return CourseDataResponse::get(
+            $this->courseService->createCourse(
+                $createCourseRequest
+                    ->merge(
+                        [
+                            'author_id' => $createCourseRequest->user()->getId(),
+                            'entity_type' => EntityType::create(EntityType::TYPE_COURSE)
+                        ]
+                    )
+                    ->all()
+            )
         );
     }
 
     /**
      * @OA\Get(
-     *      path="/api/v1/course/{id}",
+     *      path="/api/v1/course/{course_id}",
      *      @OA\Parameter(
      *          parameter="id",
      *          name="id",
@@ -135,17 +119,17 @@ final class CourseController extends AbstractApiController
     {
         return CourseDataResponse::get(
             $this->courseService->getCourseById(
-                $courseByIdRequest->getId()
+                $courseByIdRequest->getCourseId()
             )
         );
     }
 
     /**
      * @OA\Put(
-     *      path="/api/v1/course/{id}",
+     *      path="/api/v1/course/{course_id}",
      *      @OA\Parameter(
-     *          parameter="id",
-     *          name="id",
+     *          parameter="course_id",
+     *          name="course_id",
      *          required=true,
      *          description="Id курса",
      *          @OA\Schema(
@@ -186,7 +170,7 @@ final class CourseController extends AbstractApiController
     {
         return CourseDataResponse::get(
             $this->courseService->updateCourse(
-                $updateCourseByIdRequest->getId(),
+                Course::getById($updateCourseByIdRequest->getCourseId()),
                 $updateCourseByIdRequest->all()
             )
         );
@@ -194,10 +178,10 @@ final class CourseController extends AbstractApiController
 
     /**
      * @OA\Get(
-     *      path="/api/v1/course/{id}/preview",
+     *      path="/api/v1/course/{course_id}/preview",
      *      @OA\Parameter(
-     *          parameter="id",
-     *          name="id",
+     *          parameter="course_id",
+     *          name="course_id",
      *          required=true,
      *          description="Id курса",
      *          @OA\Schema(
@@ -227,17 +211,17 @@ final class CourseController extends AbstractApiController
     {
         return new CoursePreviewResponse(
             $this->courseService->getCourseById(
-                $previewCourseByIdRequest->getId()
+                $previewCourseByIdRequest->getCourseId()
             )
         );
     }
 
     /**
      * @OA\Delete (
-     *      path="/api/v1/course/{id}",
+     *      path="/api/v1/course/{course_id}",
      *      @OA\Parameter(
-     *          parameter="id",
-     *          name="id",
+     *          parameter="course_id",
+     *          name="course_id",
      *          required=true,
      *          description="Id курса",
      *          @OA\Schema(
@@ -261,7 +245,7 @@ final class CourseController extends AbstractApiController
     public function delete(DeleteCourseByIdRequest $deleteCourseByIdRequest): JsonResponse
     {
         $this->courseService->deleteCourse(
-            $deleteCourseByIdRequest->getId()
+            $deleteCourseByIdRequest->getCourseId()
         );
 
         return DeleteResourceResponse::get();

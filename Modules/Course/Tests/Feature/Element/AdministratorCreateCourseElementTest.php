@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Modules\Course\Tests\Feature\Section;
+namespace Modules\Course\Tests\Feature\Element;
 
 use Modules\Course\Entities\Course;
+use Modules\Course\Entities\CourseSection;
+use Modules\Course\Http\Controllers\CourseSectionElementController;
 use Modules\Course\Tests\CourseTestCase;
+use Modules\Course\ValueObjects\CourseElement;
 use Modules\Course\ValueObjects\CoursePermission;
 use Modules\Entity\Entities\Entity;
 use Modules\Entity\ValueObjects\EntityType;
@@ -14,20 +17,22 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @group functional
  * @group course
+ * @see CourseSectionElementController::create()
  */
-final class CreateCourseSectionTest extends CourseTestCase
+final class AdministratorCreateCourseElementTest extends CourseTestCase
 {
-    protected string $endpoint = 'api/v1/course/%d/section';
+    protected string $endpoint = 'api/v1/course/section/%d/element';
 
-    public function testItCreatesSectionForCourse():void
+    public function testItCreatesCourseElement():void
     {
         $this->testingUser->givePermissionTo(
-            CoursePermission::CREATE
+            CoursePermission::EDIT_AS_ADMINISTRATOR
         );
 
+        /** @var Entity $entity */
         $entity = Entity::factory()->create(
             [
-                'author_id' => $this->testingUser->getAuthorId(),
+                'author_id' => $this->getUserForTest()->getAuthorId(),
                 'entity_type' => EntityType::TYPE_COURSE,
             ]
         );
@@ -38,7 +43,13 @@ final class CreateCourseSectionTest extends CourseTestCase
             ]
         );
 
-        $this->endpoint = sprintf($this->endpoint, $entity->getAttribute('id'));
+        $courseSection = CourseSection::factory()->create(
+            [
+                'entity_id' => $entity->getId(),
+            ]
+        );
+
+        $this->endpoint = sprintf($this->endpoint, $courseSection->getAttribute('id'));
 
         $response = $this->post(
             $this->endpoint,
@@ -46,18 +57,15 @@ final class CreateCourseSectionTest extends CourseTestCase
                 'sort_order' => self::SORT_ORDER,
                 'pass_score' => self::PASS_SCORE,
                 'title' => self::TITLE,
+                'type' => CourseElement::TYPE_TEXT,
                 'description' => self::DESCRIPTION,
-                'admin_notes' => self::ADMIN_NOTES,
-                'finish_course_on_fail' => self::FINISH_COURSE_ON_FAIL,
-                'show_results' => self::SHOW_RESULTS,
-                'sequential_passage' => self::SEQUENTIAL_PASSAGE,
+                'attempt_count' => self::ATTEMPT_COUNT,
             ],
             $this->getAuthorizationHeaders()
         );
 
         $decodedResponse = $response->decodeResponseJson()['data'];
         self::assertSame(self::DESCRIPTION, $decodedResponse['description']);
-        self::assertSame(self::ADMIN_NOTES, $decodedResponse['admin_notes']);
         self::assertSame(self::TITLE, $decodedResponse['title']);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -74,7 +82,7 @@ final class CreateCourseSectionTest extends CourseTestCase
     {
         $entity = Entity::factory()->create(
             [
-                'author_id' => $this->testingUser->getAuthorId(),
+                'author_id' => $this->getUserForTest()->getAuthorId(),
                 'entity_type' => EntityType::TYPE_COURSE,
             ]
         );

@@ -1,14 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests;
+namespace Modules\Course\Http\Requests\Section;
 
 use App\Requests\FormRequest;
-use App\Traits\GetIdTrait;
 use Modules\Course\Entities\CourseSection;
 use Modules\Course\Traits\GetCourseSectionTrait;
-use Modules\Entity\Entities\Entity;
-use Modules\Entity\ValueObjects\EntityType;
 
 /**
  * @property int $id
@@ -20,12 +17,9 @@ final class DeleteCourseSectionByIdRequest  extends FormRequest
 
     public function authorize():bool
     {
-        /** @var CourseSection $courseSection */
-        $courseSection = CourseSection::query()
-            ->where('id', '=', $this->getSectionId())
-            ->first();
         return $this->user()->canUpdateCourse(
-            $courseSection->getEntity()
+            CourseSection::getById($this->getSectionId())
+                ->getCourse()
         );
     }
 

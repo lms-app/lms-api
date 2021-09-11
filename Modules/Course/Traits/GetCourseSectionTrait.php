@@ -3,9 +3,6 @@ declare (strict_types=1);
 
 namespace Modules\Course\Traits;
 
-
-use Modules\Course\Entities\CourseSection;
-
 trait GetCourseSectionTrait
 {
     public function getSectionId():int
@@ -22,10 +19,8 @@ trait GetCourseSectionTrait
         return (int) $this->parent_id;
     }
 
-    public function getSectionById(int $sectionId):CourseSection
+    public function hasParentId():bool
     {
-        return CourseSection::query()
-            ->where('id', '=', $sectionId)
-            ->first();
+        return $this->parent_id !== null;
     }
 }

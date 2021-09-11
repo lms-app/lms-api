@@ -1,16 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests;
+namespace Modules\Course\Http\Requests\Course;
 
 use App\Requests\FormRequest;
-use App\Traits\GetIdTrait;
 use Modules\Entity\ValidationRules\EntityStatusRule;
 
-final class CreateCourseSectionRequest extends FormRequest
+final class CreateCourseRequest extends FormRequest
 {
-    use GetIdTrait;
-
     public function authorize():bool
     {
         return $this->user()->canCreateCourse();
@@ -19,8 +16,7 @@ final class CreateCourseSectionRequest extends FormRequest
     public function rules():array
     {
         return [
-            'id,required,exists:entities,id',
-            'title,required',
+            'status' => ['required', new EntityStatusRule()],
         ];
     }
 }

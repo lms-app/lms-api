@@ -5,6 +5,8 @@ namespace Modules\Course\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Entity\Entities\Entity;
 
 final class CourseElement extends Model
 {
@@ -22,6 +24,36 @@ final class CourseElement extends Model
         'attempt_count',
         'pass_score',
     ];
+
+    public function section():BelongsTo
+    {
+        return $this->belongsTo(CourseSection::class, 'section_id', 'id');
+    }
+
+    public function getSection():CourseSection
+    {
+        return $this->section;
+    }
+
+    public function getId():int
+    {
+        return $this->id;
+    }
+
+    public function getSectionId():int
+    {
+        return $this->section_id;
+    }
+
+    public function getAuthorId():int
+    {
+        return $this->author_id;
+    }
+
+    public function getFileId():?int
+    {
+        return $this->file_id;
+    }
 
     protected static function newFactory()
     {

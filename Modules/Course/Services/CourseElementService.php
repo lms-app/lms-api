@@ -13,12 +13,13 @@ final class CourseElementService implements CourseElementServiceInterface
         // TODO: Implement getElementById() method.
     }
 
-    public function createElement(array $createCourseData): CourseElement
+    public function createElement(array $createData): CourseElement
     {
-        // TODO: Implement createElement() method.
+        return CourseElement::query()
+            ->create($createData);
     }
 
-    public function updateElement(int $elementId, array $updateData): CourseElement
+    public function updateElement(CourseElement $element, array $updateData): CourseElement
     {
         // TODO: Implement updateElement() method.
     }

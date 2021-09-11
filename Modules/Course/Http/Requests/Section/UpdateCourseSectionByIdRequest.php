@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests;
+namespace Modules\Course\Http\Requests\Section;
 
 use App\Requests\FormRequest;
+use Modules\Course\Entities\CourseSection;
 use Modules\Course\Traits\GetCourseSectionTrait;
 
 /**
@@ -16,20 +17,18 @@ final class UpdateCourseSectionByIdRequest  extends FormRequest
 
     public function authorize():bool
     {
-        $courseSection = $this->getSectionById($this->getSectionId());
+        $courseSection = CourseSection::getById($this->getSectionId());
 
-        if ($this->getParentSectionId() !== null) {
-            $parentSection = $this->getSectionById(
-                $this->getParentSectionId()
-            );
+        if ($this->hasParentId()) {
+            $parentSection = CourseSection::getById($this->getParentSectionId());
 
             if(!$parentSection->getEntity()->equals($courseSection->getEntity())) {
                 return false;
             }
         }
 
-        return $this->user()->canUpdateCourse(
-            $courseSection->getEntity()
+        return $this->getUserModel()->canUpdateCourse(
+            $courseSection->getCourse()
         );
     }
 

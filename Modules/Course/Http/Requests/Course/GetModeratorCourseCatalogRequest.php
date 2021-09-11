@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests;
+namespace Modules\Course\Http\Requests\Course;
 
 use App\Requests\FormRequest;
 use Modules\Course\ValueObjects\CoursePermission;

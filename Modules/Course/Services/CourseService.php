@@ -52,13 +52,10 @@ final class CourseService implements CourseServiceInterface
     /**
      * @throws Throwable
      */
-    public function updateCourse(int $courseId, array $updateData): Course
+    public function updateCourse(Course $course, array $updateData): Course
     {
         DB::beginTransaction();
         try {
-            $course = $this->getCourseById(
-                $courseId
-            );
             $course->update($updateData);
             $course->save();
 

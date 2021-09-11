@@ -68,7 +68,7 @@ final class User extends Authenticatable
 
     public function isModelAuthor(Model $model):bool
     {
-        return $model->getAttribute('author_id') === $this->getAuthorId();
+        return $model->getAuthorId() === $this->getAuthorId();
     }
 
     public function getFullName():string

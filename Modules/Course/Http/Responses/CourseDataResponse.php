@@ -6,7 +6,7 @@ namespace Modules\Course\Http\Responses;
 use Illuminate\Http\JsonResponse;
 use Modules\Course\Entities\Course;
 
-final class CourseDataResponse  extends JsonResponse
+final class CourseDataResponse extends JsonResponse
 {
     public static function get(Course $course):self
     {
