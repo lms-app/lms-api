@@ -25,6 +25,6 @@ class CourseSection extends Model
 
     protected static function newFactory()
     {
-        return \Modules\Course\Database\factories\CourseSectionFactory::new();
+        return \Modules\Course\Database\Factories\CourseSectionFactory::new();
     }
 }
