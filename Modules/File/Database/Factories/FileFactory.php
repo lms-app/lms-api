@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\File\Database\factories;
+namespace Modules\File\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
