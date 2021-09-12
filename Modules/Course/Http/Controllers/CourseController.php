@@ -12,7 +12,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Appointment\Http\Responses\AppointmentDataResponse;
 use Modules\Appointment\ValueObjects\AppointmentStatus;
 use Modules\Course\Entities\Course;
-use Modules\Course\Http\Requests\Course\CreateCourseAppointmentRequest;
+use Modules\Course\Http\Requests\Course\Appointment\CreateCourseAppointmentRequest;
+use Modules\Course\Http\Requests\Course\Appointment\GetCourseAppointmentRequest;
 use Modules\Course\Http\Requests\Course\CreateCourseRequest;
 use Modules\Course\Http\Requests\Course\DeleteCourseByIdRequest;
 use Modules\Course\Http\Requests\Course\GetCourseByIdRequest;
@@ -368,7 +369,7 @@ final class CourseController extends AbstractApiController
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post (
      *      path="/api/v1/course/{course_id}/appointment",
      *      tags={"Course", "Apppointment"},
      *      summary="Создаёт назначение для курса",
@@ -394,5 +395,27 @@ final class CourseController extends AbstractApiController
         );
 
        return AppointmentDataResponse::get($appointment);
+    }
+
+    /**
+     * @OA\Get (
+     *      path="/api/v1/course/appointment/{appointment_id}",
+     *      tags={"Course", "Apppointment"},
+     *      summary="Получает назначение для курса",
+     *      description="Получает назначение для курса",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Appointment.AppointmentDataResponse")
+     *       )
+     *     )
+     */
+    public function getAppointment(GetCourseAppointmentRequest $getCourseAppointmentRequest):JsonResponse
+    {
+       return AppointmentDataResponse::get(
+           $this->courseService->getAppointmentById(
+               $getCourseAppointmentRequest->getAppointmentId()
+           )
+       );
     }
 }

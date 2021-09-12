@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\Appointment\Entities\Appointment;
 use Modules\Appointment\Services\AppointmentServiceInterface;
 use Modules\Course\Entities\Course;
-use Modules\Entity\Entities\Entity;
 use Modules\Entity\Services\EntityServiceInterface;
 use Modules\User\Entities\User;
 use Throwable;
@@ -83,5 +82,10 @@ final class CourseService implements CourseServiceInterface
     public function createAppointment(User $user, Course $course, array $appointmentData): Appointment
     {
         return $this->appointmentService->createAppointment($user, $course->getEntity(), $appointmentData);
+    }
+
+    public function getAppointmentById(int $appointmentId): Appointment
+    {
+        return Appointment::getById($appointmentId);
     }
 }

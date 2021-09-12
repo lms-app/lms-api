@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Appointment\Exceptions\AppointmentException;
 use Modules\Entity\Entities\Entity;
 use Modules\User\Entities\User;
 
@@ -14,6 +15,8 @@ final class Appointment extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    private static array $appointments = [];
 
     protected $fillable = [
         'user_id',
@@ -82,5 +85,20 @@ final class Appointment extends Model
     public function getAttemptsMax():int
     {
         return $this->attempts_max;
+    }
+
+    public static function getById(int $id):self
+    {
+        if (!isset(self::$appointments[$id])) {
+            self::$appointments[$id] = self::query()
+                ->where('entity_id', '=', $id)
+                ->first();
+        }
+
+        if (self::$appointments[$id] === null) {
+            throw AppointmentException::becauseAppointmentIsNotExists();
+        }
+
+        return self::$appointments[$id];
     }
 }

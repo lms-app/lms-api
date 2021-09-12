@@ -11,4 +11,9 @@ final class AppointmentException extends Exception
     {
         return new self('Appointment exists');
     }
+
+    public static function becauseAppointmentIsNotExists():self
+    {
+        return new self('Appointment is not exists');
+    }
 }

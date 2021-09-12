@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Modules\Course\Http\Requests\Course;
+namespace Modules\Course\Http\Requests\Course\Appointment;
 
 use App\Requests\FormRequest;
 use DateTimeImmutable;

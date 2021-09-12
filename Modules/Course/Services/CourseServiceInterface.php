@@ -22,4 +22,5 @@ interface CourseServiceInterface
     public function updateCourse(Course $course, array $updateData):Course;
     public function deleteCourse(int $courseId):void;
     public function createAppointment(User $user, Course $course, array $appointmentData):Appointment;
+    public function getAppointmentById(int $appointmentId):Appointment;
 }
