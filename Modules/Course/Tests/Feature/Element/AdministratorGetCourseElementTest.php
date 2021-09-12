@@ -27,7 +27,7 @@ final class AdministratorGetCourseElementTest extends CourseTestCase
     public function testItGetCourseElement():void
     {
         $this->testingUser->givePermissionTo(
-            CoursePermission::EDIT_AS_ADMINISTRATOR
+            CoursePermission::SEE_AS_ADMINISTRATOR
         );
 
         /** @var Entity $entity */
