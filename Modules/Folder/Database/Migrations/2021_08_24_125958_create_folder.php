@@ -15,7 +15,7 @@ final class CreateFolder extends Migration
             $table->string('title')->nullable();
             $table->boolean('inherit_access')->default(false);
             $table->foreignId('parent_id')->nullable()->constrained('folders')->onDelete('cascade');
-            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->string('color')->nullable();
             $table->softDeletes();
             $table->timestamps();

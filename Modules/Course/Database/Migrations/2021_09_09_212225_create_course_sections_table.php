@@ -17,7 +17,7 @@ final class CreateCourseSectionsTable extends Migration
             $table->float('pass_score')->default(0);
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->text('admin_notes')->nullable();
             $table->boolean('finish_course_on_fail')->default(false);
             $table->boolean('show_results')->default(false);

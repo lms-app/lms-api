@@ -47,12 +47,14 @@ final class ModeratorUpdateCourseElementTest extends CourseTestCase
         /** @var CourseSection $courseSection */
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getId(),
             ]
         );
 
         $courseSectionElement = CourseElement::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'section_id' => $courseSection->getId(),
                 'type' => CourseElementValue::TYPE_PDF,
                 'title' => self::TITLE,
@@ -112,12 +114,14 @@ final class ModeratorUpdateCourseElementTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getId(),
             ]
         );
 
         $courseSectionElement = CourseElement::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'section_id' => $courseSection->getId(),
                 'type' => CourseElementValue::TYPE_PDF,
                 'title' => self::TITLE,

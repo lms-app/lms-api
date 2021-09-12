@@ -10,7 +10,7 @@ final class CourseElementService implements CourseElementServiceInterface
 {
     public function getElementById(int $elementId): CourseElement
     {
-        // TODO: Implement getElementById() method.
+        return CourseElement::getById($elementId);
     }
 
     public function createElement(array $createData): CourseElement

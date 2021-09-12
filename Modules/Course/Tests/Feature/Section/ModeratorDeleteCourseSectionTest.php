@@ -40,6 +40,7 @@ final class ModeratorDeleteCourseSectionTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getAttribute('id'),
             ]
         );
@@ -79,6 +80,7 @@ final class ModeratorDeleteCourseSectionTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getAttribute('id'),
             ]
         );

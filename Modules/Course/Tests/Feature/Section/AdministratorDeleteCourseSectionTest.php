@@ -40,6 +40,7 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getAttribute('id'),
             ]
         );
@@ -75,6 +76,7 @@ final class AdministratorDeleteCourseSectionTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getAttribute('id'),
             ]
         );

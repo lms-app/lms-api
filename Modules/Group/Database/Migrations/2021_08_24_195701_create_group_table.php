@@ -12,7 +12,7 @@ final class CreateGroupTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

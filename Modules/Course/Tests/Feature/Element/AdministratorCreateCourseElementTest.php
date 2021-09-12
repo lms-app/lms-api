@@ -45,6 +45,7 @@ final class AdministratorCreateCourseElementTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getId(),
             ]
         );
@@ -95,6 +96,7 @@ final class AdministratorCreateCourseElementTest extends CourseTestCase
 
         $courseSection = CourseSection::factory()->create(
             [
+                'author_id' => $this->getUserForTest()->getId(),
                 'entity_id' => $entity->getId(),
             ]
         );

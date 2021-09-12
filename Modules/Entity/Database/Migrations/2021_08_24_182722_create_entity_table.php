@@ -14,7 +14,7 @@ final class CreateEntityTable extends Migration
             $table->string('entity_type');
             $table->string('title')->nullable();
             $table->string('status');
-            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('folder_id')->nullable()->constrained('folders')->onDelete('cascade');
             $table->text('admin_notes')->nullable();
             $table->text('short_description')->nullable();

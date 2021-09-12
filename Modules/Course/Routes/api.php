@@ -21,6 +21,7 @@ Route::group([], static function() {
     Route::delete('/section/{section_id}', [CourseSectionController::class, 'delete']);
     Route::post('/section/{section_id}/element', [CourseSectionElementController::class, 'create']);
     Route::put('/section/element/{element_id}', [CourseSectionElementController::class, 'update']);
+    Route::get('/section/element/{element_id}', [CourseSectionElementController::class, 'get']);
     Route::delete('/section/element/{element_id}', [CourseSectionElementController::class, 'delete']);
 });
 
