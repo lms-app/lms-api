@@ -54,7 +54,7 @@ final class ModeratorGetCourseElementTest extends CourseTestCase
 
         $courseSectionElement = CourseElement::factory()->create(
             [
-                'author_id' => $this->getUserForTest()->getId(),
+                'author_id' => $this->testingUser->getId(),
                 'section_id' => $courseSection->getId(),
                 'type' => CourseElementValue::TYPE_PDF,
                 'title' => self::TITLE,
