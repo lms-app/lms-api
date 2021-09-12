@@ -21,11 +21,14 @@ final class CourseElementService implements CourseElementServiceInterface
 
     public function updateElement(CourseElement $element, array $updateData): CourseElement
     {
-        // TODO: Implement updateElement() method.
+        $element->update($updateData);
+        return $element;
     }
 
     public function deleteElements(int ...$elementIds): void
     {
-        // TODO: Implement deleteElements() method.
+        CourseElement::query()
+            ->whereIn('id', $elementIds)
+            ->delete();
     }
 }

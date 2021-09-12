@@ -6,11 +6,16 @@ namespace Modules\Course\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Course\Exceptions\CourseElementException;
 use Modules\Entity\Entities\Entity;
 
 final class CourseElement extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    private static array $courseElements = [];
 
     protected $fillable = [
         'section_id',
@@ -53,6 +58,31 @@ final class CourseElement extends Model
     public function getFileId():?int
     {
         return $this->file_id;
+    }
+
+    public function getCourse():Course
+    {
+        return $this->getSection()->getCourse();
+    }
+
+    public static function getById(int $id):self
+    {
+        if (!isset(self::$courseElements[$id])) {
+            self::$courseElements[$id] = self::query()
+                ->where('id', '=', $id)
+                ->first();
+        }
+
+        if (self::$courseElements[$id] === null) {
+            throw CourseElementException::becauseCourseElementIsNotExist();
+        }
+
+        return self::$courseElements[$id];
+    }
+
+    public function equals(CourseElement $courseElement):bool
+    {
+        return $this->getId() === $courseElement->getId();
     }
 
     protected static function newFactory()

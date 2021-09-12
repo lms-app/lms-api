@@ -16,23 +16,15 @@ final class DeleteCourseElementByIdRequest  extends FormRequest
 
     public function authorize():bool
     {
-        /** @var CourseElement $courseElement */
-        $courseElement = CourseElement::query()
-            ->where(
-                'id',
-                '=',
-                $this->getElementById($this->getElementId())
-            )
-            ->first();
         return $this->user()->canUpdateCourse(
-            $courseElement->getSection()->getEntity()
+            CourseElement::getById($this->getElementId())->getCourse()
         );
     }
 
     public function rules(): array
     {
         return [
-            'section_id,required,exists:course_sections,id',
+            'element_id,required,exists:course_elements,id',
         ];
     }
 }

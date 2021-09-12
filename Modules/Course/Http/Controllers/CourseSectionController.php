@@ -167,17 +167,6 @@ final class CourseSectionController extends AbstractApiController
      *      summary="Удаление секции курса",
      *      description="Удаление секции курса",
      *      @OA\Parameter(
-     *          parameter="id",
-     *          name="id",
-     *          required=true,
-     *          description="Id курса",
-     *          @OA\Schema(
-     *              type="integer",
-     *              format="int32",
-     *          ),
-     *          in="path",
-     *      ),
-     *      @OA\Parameter(
      *          parameter="section_id",
      *          name="section_id",
      *          required=true,

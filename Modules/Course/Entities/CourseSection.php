@@ -6,6 +6,7 @@ namespace Modules\Course\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Course\Exceptions\CourseSectionException;
 use Modules\Entity\Entities\Entity;
 
@@ -15,6 +16,7 @@ use Modules\Entity\Entities\Entity;
 final class CourseSection extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     private static array $courseSections = [];
 
@@ -80,6 +82,11 @@ final class CourseSection extends Model
         }
 
         return self::$courseSections[$id];
+    }
+
+    public function equals(CourseSection $courseSection):bool
+    {
+        return $this->getId() === $courseSection->getId();
     }
 
     protected static function newFactory()

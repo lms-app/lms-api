@@ -19,20 +19,20 @@ use Symfony\Component\HttpFoundation\Response;
  * @group course
  * @see CourseSectionElementController::create()
  */
-final class AdministratorCreateCourseElementTest extends CourseTestCase
+final class ModeratorCreateCourseElementTest extends CourseTestCase
 {
     protected string $endpoint = 'api/v1/course/section/%d/element';
 
-    public function testItCreatesCourseElement():void
+    public function testItCreatesCourseElementBecauseUserIsCourseAuthor():void
     {
         $this->testingUser->givePermissionTo(
-            CoursePermission::EDIT_AS_ADMINISTRATOR
+            CoursePermission::EDIT_AS_MODERATOR
         );
 
         /** @var Entity $entity */
         $entity = Entity::factory()->create(
             [
-                'author_id' => $this->getUserForTest()->getAuthorId(),
+                'author_id' => $this->testingUser->getAuthorId(),
                 'entity_type' => EntityType::TYPE_COURSE,
             ]
         );
@@ -78,8 +78,12 @@ final class AdministratorCreateCourseElementTest extends CourseTestCase
         $response->assertSee(['sequential_passage' => self::SEQUENTIAL_PASSAGE]);
     }
 
-    public function testItForbidCreatesCourseElementBecauseUserDoesNotHavePermissions():void
+    public function testItForbidCreatesCourseElementBecauseUserIsNotCourseAuthor():void
     {
+        $this->testingUser->givePermissionTo(
+            CoursePermission::EDIT_AS_MODERATOR
+        );
+
         $entity = Entity::factory()->create(
             [
                 'author_id' => $this->getUserForTest()->getAuthorId(),

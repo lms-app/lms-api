@@ -6,7 +6,9 @@ namespace Modules\Course\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Course\Database\Factories\CoursesFactory;
+use Modules\Course\Exceptions\CourseException;
 use Modules\Entity\Entities\Entity;
 use Modules\Folder\Entities\Folder;
 
@@ -16,6 +18,7 @@ use Modules\Folder\Entities\Folder;
 final class Course extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     private static array $courses = [];
 
@@ -57,6 +60,10 @@ final class Course extends Model
             self::$courses[$id] = self::query()
                 ->where('entity_id', '=', $id)
                 ->first();
+        }
+
+        if (self::$courses[$id] === null) {
+            throw CourseException::becauseCourseIsNotExist();
         }
 
         return self::$courses[$id];

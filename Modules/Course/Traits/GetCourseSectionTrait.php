@@ -10,6 +10,11 @@ trait GetCourseSectionTrait
         return (int) $this->section_id;
     }
 
+    public function hasSectionId():bool
+    {
+        return $this->section_id !== null;
+    }
+
     public function getParentSectionId():?int
     {
         if ($this->parent_id === null) {

@@ -21,7 +21,7 @@ final class CreateCourseElementRequest extends FormRequest
                 ->canUpdateCourse(
                     CourseSection::getById($this->getSectionId())->getCourse()
                 );
-        } catch (\Throwable) {
+        } catch (\Throwable $exception) {
             return false;
         }
     }

@@ -15,6 +15,7 @@ final class CreateCourseTable extends Migration
             $table->boolean('after_finished_view_element_access')->default(false);
             $table->boolean('section_sequential_passage')->default(false);
             $table->timestamps();
+            $table->softDeletes();
             $table->primary('entity_id');
         });
     }
