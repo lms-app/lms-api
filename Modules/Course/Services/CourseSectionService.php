@@ -10,9 +10,7 @@ final class CourseSectionService implements CourseSectionServiceInterface
 {
     public function getSectionById(int $sectionId): CourseSection
     {
-        return CourseSection::query()
-            ->where('id', '=', $sectionId)
-            ->first();
+        return CourseSection::getById($sectionId);
     }
 
     public function createSection(array $createCourseData): CourseSection

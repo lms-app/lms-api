@@ -19,6 +19,7 @@ Route::group([], static function() {
     Route::post('/{course_id}/section', [CourseSectionController::class, 'create']);
     Route::put('/section/{section_id}', [CourseSectionController::class, 'update']);
     Route::delete('/section/{section_id}', [CourseSectionController::class, 'delete']);
+    Route::get('/section/{section_id}', [CourseSectionController::class, 'get']);
     Route::post('/section/{section_id}/element', [CourseSectionElementController::class, 'create']);
     Route::put('/section/element/{element_id}', [CourseSectionElementController::class, 'update']);
     Route::get('/section/element/{element_id}', [CourseSectionElementController::class, 'get']);

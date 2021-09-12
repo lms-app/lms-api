@@ -6,6 +6,23 @@ namespace Modules\Course\Http\Responses;
 use Illuminate\Http\JsonResponse;
 use Modules\Course\Entities\CourseSection;
 
+/**
+ * @OA\Schema(
+ *   schema="Course.SectionDataResponse",
+ *   type="object",
+ *   @OA\Property(property="title", type="string", description="Название секции", example="секция 1"),
+ *   @OA\Property(property="description", type="string", description="описание секции", example=""),
+ *   @OA\Property(property="admin_notes", type="string", description="заметки модератора", example=""),
+ *   @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
+ *   @OA\Property(property="entity_id", type="integer", description="ID сущности", example="100"),
+ *   @OA\Property(property="parent_id", type="integer", description="ID родительской секции", example="100"),
+ *   @OA\Property(property="sort_order", type="integer", description="Порядок сортировки", example="100"),
+ *   @OA\Property(property="pass_score", type="integer", description="Баллы необходимые для прохождения секции", example="100"),
+ *   @OA\Property(property="finish_course_on_fail", type="boolean", description="завершить курс при ошибки прохождения", example="false"),
+ *   @OA\Property(property="show_results", type="boolean", description="показывать результаты прохождения", example="false"),
+ *   @OA\Property(property="sequential_passage", type="boolean", description="последовательное прохождение", example="false"),
+ * )
+ */
 final class CourseSectionDataResponse  extends JsonResponse
 {
     public static function get(CourseSection $courseSection):self
