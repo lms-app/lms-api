@@ -11,7 +11,7 @@ final class CreateCourseSectionsTable extends Migration
     {
         Schema::create('course_sections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('cascade');
+            $table->foreignId('entity_id')->constrained('entities')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('course_sections')->onDelete('cascade');
             $table->integer('sort_order')->default(100);
             $table->float('pass_score')->default(0);

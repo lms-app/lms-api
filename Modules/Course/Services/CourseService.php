@@ -5,18 +5,26 @@ declare(strict_types=1);
 namespace Modules\Course\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Appointment\Entities\Appointment;
+use Modules\Appointment\Services\AppointmentServiceInterface;
 use Modules\Course\Entities\Course;
 use Modules\Entity\Entities\Entity;
 use Modules\Entity\Services\EntityServiceInterface;
+use Modules\User\Entities\User;
 use Throwable;
 
 final class CourseService implements CourseServiceInterface
 {
     private EntityServiceInterface $entityService;
+    private AppointmentServiceInterface $appointmentService;
 
-    public function __construct(EntityServiceInterface $entityService)
+    public function __construct(
+        EntityServiceInterface $entityService,
+        AppointmentServiceInterface $appointmentService
+    )
     {
         $this->entityService = $entityService;
+        $this->appointmentService = $appointmentService;
     }
 
     public function createCourse(array $createCourseData): Course
@@ -70,5 +78,10 @@ final class CourseService implements CourseServiceInterface
             DB::rollBack();
             throw $exception;
         }
+    }
+
+    public function createAppointment(User $user, Course $course, array $appointmentData): Appointment
+    {
+        return $this->appointmentService->createAppointment($user, $course->getEntity(), $appointmentData);
     }
 }

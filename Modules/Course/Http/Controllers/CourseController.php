@@ -6,9 +6,13 @@ namespace Modules\Course\Http\Controllers;
 use App\Http\Controllers\AbstractApiController;
 use App\Responses\DeleteResourceResponse;
 use App\Responses\PaginatorResponse;
+use DateTimeImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Appointment\Http\Responses\AppointmentDataResponse;
+use Modules\Appointment\ValueObjects\AppointmentStatus;
 use Modules\Course\Entities\Course;
+use Modules\Course\Http\Requests\Course\CreateCourseAppointmentRequest;
 use Modules\Course\Http\Requests\Course\CreateCourseRequest;
 use Modules\Course\Http\Requests\Course\DeleteCourseByIdRequest;
 use Modules\Course\Http\Requests\Course\GetCourseByIdRequest;
@@ -361,5 +365,34 @@ final class CourseController extends AbstractApiController
                 ]
             ]
         );
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/{course_id}/appointment",
+     *      tags={"Course", "Apppointment"},
+     *      summary="Создаёт назначение для курса",
+     *      description="Создаёт назначение для курса",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Appointment.AppointmentDataResponse")
+     *       )
+     *     )
+     */
+    public function createAppointment(CreateCourseAppointmentRequest $courseAppointmentRequest):JsonResponse
+    {
+       $appointment = $this->courseService->createAppointment(
+            $courseAppointmentRequest->getUserModel(),
+            $this->courseService->getCourseById($courseAppointmentRequest->getCourseId()),
+            [
+                'date_start' => (new DateTimeImmutable('now'))->format('Y-m-d H:i:s'),
+                'date_end' => $courseAppointmentRequest->getDateEnd()->format('Y-m-d H:i:s'),
+                'status' => AppointmentStatus::ASSIGNED,
+                'attempts_max' => $courseAppointmentRequest->getAttemptsMax(),
+            ]
+        );
+
+       return AppointmentDataResponse::get($appointment);
     }
 }

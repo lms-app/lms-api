@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Modules\Appointment\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Appointment\Services\AppointmentService;
+use Modules\Appointment\Services\AppointmentServiceInterface;
 
 final class AppointmentServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ final class AppointmentServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(AppointmentServiceInterface::class, AppointmentService::class);
     }
 
     protected function registerConfig():void

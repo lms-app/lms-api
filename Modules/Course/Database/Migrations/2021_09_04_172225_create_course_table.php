@@ -10,7 +10,7 @@ final class CreateCourseTable extends Migration
     public function up():void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('cascade');
+            $table->foreignId('entity_id')->constrained('entities')->onDelete('cascade');
             $table->integer('attempts_count')->default(1);
             $table->boolean('after_finished_view_element_access')->default(false);
             $table->boolean('section_sequential_passage')->default(false);

@@ -10,7 +10,7 @@ final class CreateVisibilityGroupsTable extends Migration
     public function up():void
     {
         Schema::create('visibility_groups', function (Blueprint $table) {
-            $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('cascade');
+            $table->foreignId('entity_id')->constrained('entities')->onDelete('cascade');
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->primary([

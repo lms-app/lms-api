@@ -16,6 +16,7 @@ Route::group([], static function() {
     Route::get('/catalog/moderator', [CourseController::class, 'catalogModerator']);
     Route::get('/catalog/tags/student', [CourseController::class, 'getCatalogStudentTags']);
     Route::get('/catalog/tags/moderator', [CourseController::class, 'getCatalogModeratorTags']);
+    Route::post('/{course_id}/appointment', [CourseController::class, 'createAppointment']);
     Route::post('/{course_id}/section', [CourseSectionController::class, 'create']);
     Route::put('/section/{section_id}', [CourseSectionController::class, 'update']);
     Route::delete('/section/{section_id}', [CourseSectionController::class, 'delete']);

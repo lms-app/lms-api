@@ -133,4 +133,9 @@ trait UserCoursePermissionTrait
     {
         return $this->hasPermissionTo(CoursePermission::CREATE);
     }
+
+    public function canTakeCourse():bool
+    {
+        return $this->hasPermissionTo(CoursePermission::PASS_AS_STUDENT);
+    }
 }
