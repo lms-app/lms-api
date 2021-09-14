@@ -17,8 +17,6 @@ final class Appointment extends Model
     use HasFactory;
     use SoftDeletes;
 
-    private static array $appointments = [];
-
     protected $fillable = [
         'user_id',
         'entity_id',
@@ -90,17 +88,15 @@ final class Appointment extends Model
 
     public static function getById(int $id):self
     {
-        if (!isset(self::$appointments[$id])) {
-            self::$appointments[$id] = self::query()
-                ->where('entity_id', '=', $id)
-                ->first();
-        }
+        $appointment = self::query()
+            ->where('entity_id', '=', $id)
+            ->first();
 
-        if (self::$appointments[$id] === null) {
+        if ($appointment === null) {
             throw AppointmentException::becauseAppointmentIsNotExists();
         }
 
-        return self::$appointments[$id];
+        return $appointment;
     }
 
     public static function getActive(User $user):?self
