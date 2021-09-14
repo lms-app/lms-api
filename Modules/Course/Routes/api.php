@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Course\Http\Controllers\CourseController;
+use Modules\Course\Http\Controllers\CourseResultController;
 use Modules\Course\Http\Controllers\CourseSectionController;
 use Modules\Course\Http\Controllers\CourseSectionElementController;
 
@@ -18,6 +19,7 @@ Route::group([], static function() {
     Route::get('/catalog/tags/moderator', [CourseController::class, 'getCatalogModeratorTags']);
     Route::post('/{course_id}/appointment', [CourseController::class, 'createAppointment']);
     Route::get('/{course_id}/appointment', [CourseController::class, 'getAppointment']);
+    Route::get('/{course_id}/appointment/start', [CourseController::class, 'startAppointment']);
     Route::post('/{course_id}/section', [CourseSectionController::class, 'create']);
     Route::put('/section/{section_id}', [CourseSectionController::class, 'update']);
     Route::delete('/section/{section_id}', [CourseSectionController::class, 'delete']);
@@ -26,5 +28,6 @@ Route::group([], static function() {
     Route::put('/section/element/{element_id}', [CourseSectionElementController::class, 'update']);
     Route::get('/section/element/{element_id}', [CourseSectionElementController::class, 'get']);
     Route::delete('/section/element/{element_id}', [CourseSectionElementController::class, 'delete']);
+    Route::post('/appointment/{appointment_id}/result', [CourseResultController::class, 'create']);
 });
 

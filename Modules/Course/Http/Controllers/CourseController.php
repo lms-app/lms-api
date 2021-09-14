@@ -418,4 +418,28 @@ final class CourseController extends AbstractApiController
            )
        );
     }
+
+    /**
+     * @OA\Post  (
+     *      path="/api/v1/course/appointment/{appointment_id}/start",
+     *      tags={"Course", "Apppointment"},
+     *      summary="Активирует назначение для курса",
+     *      description="Активирует назначение для курса",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Appointment.AppointmentDataResponse")
+     *       )
+     *     )
+     */
+    public function startAppointment(GetCourseAppointmentRequest $getCourseAppointmentRequest):JsonResponse
+    {
+       return AppointmentDataResponse::get(
+           $this->courseService->startAppointment(
+               $this->courseService->getAppointmentById(
+                   $getCourseAppointmentRequest->getAppointmentId()
+               )
+           )
+       );
+    }
 }

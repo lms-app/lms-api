@@ -11,7 +11,7 @@ final class CreateCourseElementsTable extends Migration
     {
         Schema::create('course_elements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('section_id')->nullable()->constrained('course_sections')->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('course_sections')->onDelete('cascade');
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->integer('sort_order')->default(100);
             $table->string('type');

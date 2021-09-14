@@ -5,7 +5,6 @@ namespace Modules\Course\Services;
 
 use Modules\Appointment\Entities\Appointment;
 use Modules\Course\Entities\Course;
-use Modules\Entity\Entities\Entity;
 use Modules\User\Entities\User;
 use Throwable;
 
@@ -23,4 +22,6 @@ interface CourseServiceInterface
     public function deleteCourse(int $courseId):void;
     public function createAppointment(User $user, Course $course, array $appointmentData):Appointment;
     public function getAppointmentById(int $appointmentId):Appointment;
+    public function getActiveAppointment(User $user):?Appointment;
+    public function startAppointment(Appointment $appointment):Appointment;
 }

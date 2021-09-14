@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Appointment\Exceptions\AppointmentException;
+use Modules\Appointment\ValueObjects\AppointmentStatus;
 use Modules\Entity\Entities\Entity;
 use Modules\User\Entities\User;
 
@@ -100,5 +101,20 @@ final class Appointment extends Model
         }
 
         return self::$appointments[$id];
+    }
+
+    public static function getActive(User $user):?self
+    {
+        return self::query()
+            ->where('status', '!=', AppointmentStatus::DONE)
+            ->where('user_id', '=', $user->getId())
+            ->first();
+    }
+
+    public function changeStatus(AppointmentStatus $appointmentStatus):void
+    {
+        $this->setAttribute('status', $appointmentStatus->__toString());
+        $this->save();
+
     }
 }

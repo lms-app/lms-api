@@ -9,6 +9,8 @@ use Modules\Course\Services\CourseCatalogInterface;
 use Modules\Course\Services\CourseCatalogService;
 use Modules\Course\Services\CourseElementService;
 use Modules\Course\Services\CourseElementServiceInterface;
+use Modules\Course\Services\CourseResultService;
+use Modules\Course\Services\CourseResultServiceInterface;
 use Modules\Course\Services\CourseSectionService;
 use Modules\Course\Services\CourseSectionServiceInterface;
 use Modules\Course\Services\CourseServiceInterface;
@@ -37,6 +39,7 @@ final class CourseServiceProvider extends ServiceProvider
         $this->app->bind(CourseCatalogInterface::class, CourseCatalogService::class);
         $this->app->bind(CourseSectionServiceInterface::class, CourseSectionService::class);
         $this->app->bind(CourseElementServiceInterface::class, CourseElementService::class);
+        $this->app->bind(CourseResultServiceInterface::class, CourseResultService::class);
         $this->app->register(RouteServiceProvider::class);
     }
 

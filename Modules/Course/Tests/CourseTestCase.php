@@ -17,4 +17,5 @@ abstract class CourseTestCase extends TestCase
     protected const SHOW_RESULTS = true;
     protected const SEQUENTIAL_PASSAGE = true;
     protected const ATTEMPT_COUNT = 10;
+    protected const HUNDRED_SCORE = 100;
 }

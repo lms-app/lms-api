@@ -6,7 +6,9 @@ namespace Modules\Course\Services;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Appointment\Entities\Appointment;
+use Modules\Appointment\Exceptions\AppointmentException;
 use Modules\Appointment\Services\AppointmentServiceInterface;
+use Modules\Appointment\ValueObjects\AppointmentStatus;
 use Modules\Course\Entities\Course;
 use Modules\Entity\Services\EntityServiceInterface;
 use Modules\User\Entities\User;
@@ -79,13 +81,37 @@ final class CourseService implements CourseServiceInterface
         }
     }
 
+    /**
+     * @param User $user
+     * @param Course $course
+     * @param array $appointmentData
+     * @return Appointment
+     * @throws AppointmentException
+     */
     public function createAppointment(User $user, Course $course, array $appointmentData): Appointment
     {
+        if($this->getActiveAppointment($user)) {
+            throw AppointmentException::becauseAppointmentExists();
+        }
+
         return $this->appointmentService->createAppointment($user, $course->getEntity(), $appointmentData);
     }
 
     public function getAppointmentById(int $appointmentId): Appointment
     {
         return Appointment::getById($appointmentId);
+    }
+
+    public function startAppointment(Appointment $appointment): Appointment
+    {
+        $appointment->changeStatus(
+            AppointmentStatus::create(AppointmentStatus::IN_PROGRESS)
+        );
+        return $appointment;
+    }
+
+    public function getActiveAppointment(User $user): ?Appointment
+    {
+        return Appointment::getActive($user);
     }
 }
