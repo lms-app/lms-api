@@ -26,7 +26,6 @@ use Modules\Course\Http\Responses\CoursePreviewResponse;
 use Modules\Course\Services\CourseCatalogInterface;
 use Modules\Course\Services\CourseServiceInterface;
 use Modules\Entity\ValueObjects\EntityType;
-use Symfony\Component\HttpFoundation\Response;
 
 final class CourseController extends AbstractApiController
 {
@@ -62,14 +61,7 @@ final class CourseController extends AbstractApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
-     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
-     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
-     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
-     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
-     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/Course.DataResponse")
      *       )
      *     )
      */
@@ -109,14 +101,7 @@ final class CourseController extends AbstractApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
-     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
-     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
-     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
-     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
-     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/Course.DataResponse")
      *       )
      *     )
      */
@@ -160,14 +145,7 @@ final class CourseController extends AbstractApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
-     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
-     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
-     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
-     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
-     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/Course.DataResponse")
      *       )
      *     )
      */
@@ -201,14 +179,7 @@ final class CourseController extends AbstractApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
-     *              @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
-     *              @OA\Property(property="short_description", type="string", description="Краткое описание курса", example=""),
-     *              @OA\Property(property="description", type="string", description="Полное описание курса", example=""),
-     *              @OA\Property(property="author_id", type="integer", description="ID пользователя", example="10"),
-     *              @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/Course.PreviewDataResponse")
      *       )
      *     )
      */
@@ -241,9 +212,7 @@ final class CourseController extends AbstractApiController
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="deleted", type="string", example="ok"),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/Resource.DeleteResponse")
      *       )
      *     )
      */
@@ -284,6 +253,31 @@ final class CourseController extends AbstractApiController
                 $getCourseCatalogRequest->getLimit(),
                 $getCourseCatalogRequest->getPage()
             )
+        );
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/course/catalog/my-education/count",
+     *      tags={"Course"},
+     *      summary="Считает количество элементов в моём обучении",
+     *      description="Считает количество элементов в моём обучении",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *          ),
+     *       )
+     *     )
+     */
+    public function countMyEducation(GetCourseCatalogRequest $getCourseCatalogRequest):JsonResponse
+    {
+        $catalog = $this->sortBy(
+            $this->courseCatalogService->getStudentCatalog(),
+            $getCourseCatalogRequest->getOrderByValue()
+        );
+        return new JsonResponse(
+            $catalog->count()
         );
     }
 
