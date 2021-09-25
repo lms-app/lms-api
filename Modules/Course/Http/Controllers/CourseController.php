@@ -248,7 +248,7 @@ final class CourseController extends AbstractApiController
 
        $count=0;
         while ($count != 15) {
-            $catalog->push($catalog->first);
+            $catalog->push($catalog->first());
             $count++;
         }
 
