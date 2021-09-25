@@ -30,6 +30,7 @@ final class CourseCatalogService implements CourseCatalogInterface
                 'id' => $entity->getAttribute('id'),
                 'title' => $entity->getAttribute('title'),
                 'status' => $entity->getEntityStatus()->__toString(),
+                'sections' => [],
                 'in_catalog' => false,
                 'author_id' => $entity->getAuthorId(),
                 'cover' => [

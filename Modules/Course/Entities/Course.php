@@ -6,7 +6,9 @@ namespace Modules\Course\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Modules\Course\Database\Factories\CoursesFactory;
 use Modules\Course\Exceptions\CourseException;
 use Modules\Entity\Entities\Entity;
@@ -32,6 +34,16 @@ final class Course extends Model
     public function entity():BelongsTo
     {
         return $this->belongsTo(Entity::class, 'entity_id', 'id');
+    }
+
+    public function sections():HasMany
+    {
+        return $this->hasMany(CourseSection::class, 'entity_id', 'id');
+    }
+
+    public function getSections():Collection
+    {
+        return $this->sections;
     }
 
     public function getEntity():Entity
