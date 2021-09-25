@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-final class CreateTestSectionTable extends Migration
+final class CreateTestSectionsTable extends Migration
 {
     public function up():void
     {
