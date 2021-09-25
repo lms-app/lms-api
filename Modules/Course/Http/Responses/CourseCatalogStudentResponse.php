@@ -8,7 +8,7 @@ use Modules\Course\Entities\Course;
 
 /**
  * @OA\Schema(
- *   schema="Course.PreviewDataResponse",
+ *   schema="Course.CatalogStudent",
  *   type="object",
  *   @OA\Property(property="title", type="string", description="Название курса", example="Курс по космонавтике"),
  *   @OA\Property(property="status", type="string", description="Статус курса (открытый, закрытый, ограниченный)", example="open"),
@@ -18,7 +18,7 @@ use Modules\Course\Entities\Course;
  *   @OA\Property(property="folder_id", type="integer", description="ID папки, по умолчанию null", example="100"),
  * )
  */
-final class CoursePreviewResponse  extends JsonResponse
+final class CourseCatalogStudentResponse extends JsonResponse
 {
     public static function get(Course $course):self
     {
