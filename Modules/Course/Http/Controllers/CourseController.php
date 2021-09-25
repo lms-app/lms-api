@@ -246,6 +246,12 @@ final class CourseController extends AbstractApiController
             $getCourseCatalogRequest->getOrderByValue()
         );
 
+       $count=0;
+        while ($count != 15) {
+            $catalog->push($catalog->first);
+            $count++;
+        }
+
         return PaginatorResponse::getResponse(
             new LengthAwarePaginator(
                 $catalog,
@@ -253,31 +259,6 @@ final class CourseController extends AbstractApiController
                 $getCourseCatalogRequest->getLimit(),
                 $getCourseCatalogRequest->getPage()
             )
-        );
-    }
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/course/catalog/my-education/count",
-     *      tags={"Course"},
-     *      summary="Считает количество элементов в моём обучении",
-     *      description="Считает количество элементов в моём обучении",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *          ),
-     *       )
-     *     )
-     */
-    public function countMyEducation(GetCourseCatalogRequest $getCourseCatalogRequest):JsonResponse
-    {
-        $catalog = $this->sortBy(
-            $this->courseCatalogService->getStudentCatalog(),
-            $getCourseCatalogRequest->getOrderByValue()
-        );
-        return new JsonResponse(
-            $catalog->count()
         );
     }
 
