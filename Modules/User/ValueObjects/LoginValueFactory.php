@@ -7,6 +7,8 @@ namespace Modules\User\ValueObjects;
 
 final class LoginValueFactory
 {
+    public const TYPE_EMAIL = 'email';
+
     private const VALUE_TYPES = [
         'email',
         'phone',

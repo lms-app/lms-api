@@ -7,9 +7,11 @@ use App\Http\Controllers\AbstractApiController;
 use Illuminate\Http\JsonResponse;
 use Modules\Authentication\Http\Requests\LoginRequest;
 use Modules\Authentication\Http\Requests\PasswordRequest;
+use Modules\Authentication\Http\Requests\SignupRequest;
 use Modules\Authentication\Http\Requests\TokenRefreshRequest;
 use Modules\Authentication\Services\LoginServiceInterface;
 use Modules\Authentication\Services\PasswordServiceInterface;
+use Modules\Authentication\Services\SignupServiceInterface;
 use Modules\User\Entities\User;
 
 
@@ -17,14 +19,17 @@ final class AuthenticationAbstractApiController extends AbstractApiController im
 {
     private LoginServiceInterface $loginService;
     private PasswordServiceInterface $passwordService;
+    private SignupServiceInterface $signupService;
 
     public function __construct(
-        LoginServiceInterface $loginService,
-        PasswordServiceInterface $passwordService
+        LoginServiceInterface    $loginService,
+        PasswordServiceInterface $passwordService,
+        SignupServiceInterface   $signupService,
     )
     {
         $this->loginService = $loginService;
         $this->passwordService = $passwordService;
+        $this->signupService = $signupService;
     }
 
     /**
@@ -87,6 +92,39 @@ final class AuthenticationAbstractApiController extends AbstractApiController im
             $passwordRequest->getKey(),
             $passwordRequest->getPasswordVO(),
             $passwordRequest->getDeviceVO()
+        );
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/api/v1/authentication/password",
+     *      tags={"Authentication"},
+     *      summary="Регистрация нового пользователя",
+     *      description="Регистрация нового пользователя",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              @OA\Property(property="login", type="string", description="почта", example="test@test.com"),
+     *              @OA\Property(property="password", type="string", description="Пароль для входа", example="qwery")
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="status", type="string", description="Статус", example="ok"),
+     *              @OA\Property(property="object", type="string", description="Объект", example="Authentication"),
+     *              @OA\Property(property="accessToken", type="string", description="Токен для входа", example="")
+     *          ),
+     *       )
+     *     )
+     */
+    public function signup(SignupRequest $signupRequest):JsonResponse
+    {
+        return $this->signupService->signup(
+            $signupRequest->getLogin(),
+            $signupRequest->getPassword(),
+            $signupRequest->getDeviceVO()
         );
     }
 

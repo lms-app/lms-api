@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Authentication\ValueObjects\Login;
 use Modules\Course\Traits\UserCoursePermissionTrait;
+use Modules\User\Exceptions\UserException;
+use Modules\User\ValueObjects\Email;
+use Modules\User\ValueObjects\LoginValueInterface;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -89,5 +93,27 @@ final class User extends Authenticatable
     public function getPhone():?string
     {
         return $this->phone;
+    }
+
+    public static function findByLogin(LoginValueInterface $login):User
+    {
+        $userQuery = User::query();
+
+        if ($login instanceof Email) {
+            $userQuery = $userQuery
+                ->where(
+                    'email',
+                    '=',
+                    $login
+                );
+        }
+        /** @var User $user */
+            $user = $userQuery->first();
+
+            if ($user === null){
+                throw UserException::becauseUserIsNotFoundByLogin();
+            }
+
+            return $user;
     }
 }
