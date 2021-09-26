@@ -44,6 +44,7 @@ final class SignupService implements SignupServiceInterface
             );
 
             $user->assignRole(Role::STUDENT);
+            $user->save();
 
             $token = $user
                 ->createToken(
