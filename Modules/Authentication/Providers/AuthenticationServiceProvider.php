@@ -10,6 +10,8 @@ use Modules\Authentication\Services\LoginService;
 use Modules\Authentication\Services\LoginServiceInterface;
 use Modules\Authentication\Services\PasswordService;
 use Modules\Authentication\Services\PasswordServiceInterface;
+use Modules\Authentication\Services\SignupService;
+use Modules\Authentication\Services\SignupServiceInterface;
 
 final class AuthenticationServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ final class AuthenticationServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(LoginServiceInterface::class, LoginService::class);
         $this->app->bind(PasswordServiceInterface::class, PasswordService::class);
+        $this->app->bind(SignupServiceInterface::class, SignupService::class);
         $this->app->bind(AuthenticationControllerInterface::class, AuthenticationAbstractApiController::class);
     }
 
