@@ -12,6 +12,7 @@ use Modules\Authentication\ValueObjects\Device;
 use Modules\Authentication\ValueObjects\Login;
 use Modules\Authentication\ValueObjects\LoginKey;
 use Modules\Authentication\ValueObjects\Password;
+use Modules\Authorization\ValueObjects\Role;
 use Modules\User\Entities\User;
 use Modules\User\Exceptions\UserNotFoundException;
 use Modules\User\ValueObjects\Email;
@@ -34,12 +35,15 @@ final class SignupService implements SignupServiceInterface
                 throw new \RuntimeException('User already exist');
             }
 
+            /** @var User $user */
             $user = User::query()->create(
                 [
                     'email' => $login->get(),
                     'password' => Hash::make($password->__toString()),
                 ]
             );
+
+            $user->assignRole(Role::STUDENT);
 
             $token = $user
                 ->createToken(
