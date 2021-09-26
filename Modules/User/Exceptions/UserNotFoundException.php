@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Modules\User\Exceptions;
 
-final class UserException extends \Exception
+final class UserNotFoundException extends \Exception
 {
     public static function becauseUserIsNotFoundByLogin():self
     {

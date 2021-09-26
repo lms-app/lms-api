@@ -13,6 +13,7 @@ use Modules\Authentication\ValueObjects\Login;
 use Modules\Authentication\ValueObjects\LoginKey;
 use Modules\Authentication\ValueObjects\Password;
 use Modules\User\Entities\User;
+use Modules\User\Exceptions\UserNotFoundException;
 use Modules\User\ValueObjects\Email;
 use Modules\User\ValueObjects\LoginValueFactory;
 use Modules\User\ValueObjects\LoginValueInterface;
@@ -24,7 +25,11 @@ final class SignupService implements SignupServiceInterface
     {
         try {
             $user = User::findByLogin($login);
+        } catch (UserNotFoundException $exception){
+            $user = null;
+        }
 
+        try {
             if ($user !== null) {
                 throw new \RuntimeException('User already exist');
             }

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Authentication\ValueObjects\Login;
 use Modules\Course\Traits\UserCoursePermissionTrait;
-use Modules\User\Exceptions\UserException;
+use Modules\User\Exceptions\UserNotFoundException;
 use Modules\User\ValueObjects\Email;
 use Modules\User\ValueObjects\LoginValueInterface;
 use Spatie\Permission\Traits\HasRoles;
@@ -111,7 +111,7 @@ final class User extends Authenticatable
             $user = $userQuery->first();
 
             if ($user === null){
-                throw UserException::becauseUserIsNotFoundByLogin();
+                throw UserNotFoundException::becauseUserIsNotFoundByLogin();
             }
 
             return $user;
