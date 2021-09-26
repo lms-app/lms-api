@@ -97,7 +97,7 @@ final class AuthenticationAbstractApiController extends AbstractApiController im
 
     /**
      * @OA\Post(
-     *      path="/api/v1/authentication/password",
+     *      path="/api/v1/authentication/signup",
      *      tags={"Authentication"},
      *      summary="Регистрация нового пользователя",
      *      description="Регистрация нового пользователя",
