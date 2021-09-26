@@ -64,6 +64,7 @@ final class SignupService implements SignupServiceInterface
                 ]
             );
         } catch (\Throwable $exception) {
+            var_dump($exception->getMessage(), $exception->getFile(), $exception->getLine());
             return new JsonResponse(
                 [
                     'data' =>
