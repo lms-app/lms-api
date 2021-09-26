@@ -34,10 +34,6 @@ final class SignupService implements SignupServiceInterface
                 throw new \RuntimeException('User already exist');
             }
 
-            if (!Hash::check($password->__toString(), $user->getAuthPassword())) {
-                throw new \RuntimeException('Password not exist');
-            }
-
             $user = User::query()->create(
                 [
                     'email' => $login->get(),
