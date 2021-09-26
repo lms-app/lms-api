@@ -76,9 +76,9 @@ final class User extends Authenticatable
         return $model->getAuthorId() === $this->getAuthorId();
     }
 
-    public function getFullName():string
+    public function getFullName():?string
     {
-        return $this->getAttribute('name');
+        return sprintf('%s %s', $this->getAttribute('name'),$this->getAttribute('last_name'));
     }
 
     public function getEmail():string
