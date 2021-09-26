@@ -246,13 +246,6 @@ final class CourseController extends AbstractApiController
             $getCourseCatalogRequest->getOrderByValue()
         );
 
-//       $count=0;
-//        while ($count != 15) {
-//            $newCatalog = $catalog->last();
-//            $catalog->push($newCatalog);
-//            $count++;
-//        }
-
         return PaginatorResponse::getResponse(
             new LengthAwarePaginator(
                 $catalog,
